@@ -1,0 +1,24 @@
+div.track {
+    display: flex;
+    justify-content: flex-start;
+    column-gap: 4px;
+    margin-bottom: 8px;
+  }
+  div.track > div.track-step {
+    background-color: #b6d8b8;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+  }
+  
+  div.track > div.track-step:hover {
+    cursor: pointer;
+  }
+  
+  div.track > div.track-step.engaged {
+    background-color: #dc83a3;
+  }
+  
+  div.track > div.track-step.current {
+    filter: brightness(115%)
+  }
