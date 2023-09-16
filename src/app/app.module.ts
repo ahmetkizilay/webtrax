@@ -21,7 +21,7 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
     BrowserModule,
     TrackComponent,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAnalytics(() => getAnalytics()),
+    // provideAnalytics(() => getAnalytics()),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideFunctions(() => getFunctions()),

@@ -8,6 +8,8 @@ import { Sample, SampleLibraryService } from './sample-library.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnDestroy {
+  title = "My App"; // TODO - Remove this line.
+
   audioService: AudioService = inject(AudioService);
   sampleLibraryService: SampleLibraryService = inject(SampleLibraryService);
   
@@ -18,7 +20,7 @@ export class AppComponent implements OnDestroy {
     console.log(`The sample Library is ${state}`);
   });
 
-  tracks: Sample[] = this.sampleLibraryService.getSampleList().slice(0, 4);
+  tracks$ = this.sampleLibraryService.samples$;
 
   isAudioEnabled: boolean = false;
   
