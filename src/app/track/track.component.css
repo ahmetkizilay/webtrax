@@ -22,3 +22,16 @@ div.track {
   div.track > div.track-step.current {
     filter: brightness(115%)
   }
+
+  div.track > label.track-name {
+    display: inline-block;
+    width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 8px;
+  }
+  
+  div.track > label.track-name > span {
+    display: inline-block
+  }

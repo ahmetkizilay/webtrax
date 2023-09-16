@@ -1,4 +1,4 @@
-import { Component, OnDestroy, inject } from '@angular/core';
+import { Component, Input, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AudioService } from '../audio.service';
 
@@ -12,7 +12,7 @@ export interface TrackCell {
   imports: [CommonModule],
   template: `
 <div class="track">
-  <label class="track-name"></label>
+  <label class="track-name">{{trackName}}</label>
   <div *ngFor="let cell of cells; let i = index" 
       class="track-step" 
       [class.engaged]="cell.active"
@@ -29,6 +29,8 @@ export class TrackComponent implements OnDestroy {
 
   audioService: AudioService = inject(AudioService);
   beatSubscription$ = this.audioService.onBeat.subscribe(this.selectNextCell.bind(this));
+
+  @Input({required: true}) trackName!: string;
 
   constructor() {
     for (let i = 0; i < this.num_steps; i++) {
