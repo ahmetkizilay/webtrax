@@ -2,6 +2,14 @@
   "projects": {
     "default": "webtrax-1fc7d"
   },
-  "targets": {},
+  "targets": {
+    "webtrax-1fc7d": {
+      "hosting": {
+        "MyApp": [
+          "webtrax-1fc7d"
+        ]
+      }
+    }
+  },
   "etags": {}
 }
