@@ -25,3 +25,15 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+
+## Firebase Configs
+
+### Cloud Storage - CORS
+
+Configure CORS for the cloud storage buckets to be able to download them from the browser.
+https://firebase.google.com/docs/storage/web/download-files#cors_configuration
+
+```
+gsutil cors set cloud_storage_cors.json gs://webtrax-1fc7d.appspot.com
+```

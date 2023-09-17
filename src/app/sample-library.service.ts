@@ -1,32 +1,27 @@
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, from } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { AudioService } from './audio.service';
 import { Firestore, collection, getDocs } from '@angular/fire/firestore';
+import { Storage, getBytes, ref } from '@angular/fire/storage';
 
 export interface Sample {
   name: string,
+  path: string,
 };
 
 @Injectable({
   providedIn: 'root',
 })
 export class SampleLibraryService {
-  audioService: AudioService = inject(AudioService);
-  firestore: Firestore = inject(Firestore);
+  private audioService: AudioService = inject(AudioService);
+  private firestore: Firestore = inject(Firestore);
+  private storage: Storage = inject(Storage);
+  private bufferMap = new Map<string, ArrayBuffer>();
 
   onStatusChange$ = new BehaviorSubject('uninitialized');
 
   samples$: Observable<Sample[]>;
-  private library: Sample[] = [{
-    name: 'kick',
-  }, {
-    name: 'snare',
-  }, {
-    name: 'closed_hihat',
-  }, {
-    name: 'My very long sample from Splice',
-  }];
 
   constructor() {
     this.audioService.onAudioStateChange.subscribe(audioState => {
@@ -37,8 +32,22 @@ export class SampleLibraryService {
         console.log('SampleService can start now');
       }
     });
+
     const sampleCollection = collection(this.firestore, 'samples');
     this.samples$ = from(getDocs(sampleCollection)).pipe(
-      map(docs => docs.docs.map(doc => doc.data() as Sample)));
+      map(docs => docs.docs.map(doc => doc.data() as Sample)),
+      tap(samples => {
+        Promise.all(samples.map(sample => this.downloadSample(sample))).then(() => {
+          console.log('downloaded all samples');
+        });
+      })
+    );
+  }
+
+  async downloadSample(sample: Sample) {
+    const pathReference = ref(this.storage, `samples/${sample.path}`);
+    const buffer = await getBytes(pathReference);
+    this.bufferMap.set(sample.name, buffer);
+    console.log(`downloaded ${sample.name}`);
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnDestroy, inject} from '@angular/core';
 import { AudioService } from './audio.service';
 import { Sample, SampleLibraryService } from './sample-library.service';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,8 @@ export class AppComponent implements OnDestroy {
     console.log(`The sample Library is ${state}`);
   });
 
-  tracks$ = this.sampleLibraryService.samples$;
+  // Just limiting to 4 tracks.
+  tracks$ = this.sampleLibraryService.samples$.pipe(map(samples => samples.slice(0, 4)));
 
   isAudioEnabled: boolean = false;
   
