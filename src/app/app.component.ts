@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject} from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Sample, SampleLibraryService, SampleLibraryStatus } from './sample-library.service';
 import { filter, first } from 'rxjs';
 import { AudioContextService } from './audio-context.service';
@@ -11,9 +11,9 @@ import { AudioContextService } from './audio-context.service';
 export class AppComponent implements OnInit, OnDestroy {
   title = "My App"; // TODO - Remove this line.
 
-  private audioContext: AudioContextService = inject(AudioContextService); 
+  private audioContext: AudioContextService = inject(AudioContextService);
   sampleLibraryService: SampleLibraryService = inject(SampleLibraryService);
-  
+
   audioStateSubscription$ = this.audioContext.onAudioStateChange.subscribe(audioState => {
     this.isAudioEnabled = audioState == 'running'
   });
@@ -21,7 +21,7 @@ export class AppComponent implements OnInit, OnDestroy {
   tracks: Sample[] = [];
 
   isAudioEnabled: boolean = false;
-  
+
   ngOnInit(): void {
     // One-time subscription to load the template at the beginning.
     this.sampleLibraryService.onStatusChange$.pipe(
@@ -50,7 +50,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private loadNewTemplate() {
-    const initialTracks = ['kick', 'snare', 'closed_hat'];
+    const initialTracks = [
+      'kick', 'snare', 'tom', 'clap', 
+      'cowbell', 'closed_hat', 'open_hat', 'cymbal'
+    ];
     initialTracks.forEach(name => this.addNewTrack(name));
   }
 }
