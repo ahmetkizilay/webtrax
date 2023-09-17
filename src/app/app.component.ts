@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, inject} from '@angular/core';
-import { AudioService } from './audio.service';
 import { Sample, SampleLibraryService, SampleLibraryStatus } from './sample-library.service';
-import { filter, first, map } from 'rxjs';
+import { filter, first } from 'rxjs';
+import { AudioContextService } from './audio-context.service';
 
 @Component({
   selector: 'app-root',
@@ -11,10 +11,10 @@ import { filter, first, map } from 'rxjs';
 export class AppComponent implements OnInit, OnDestroy {
   title = "My App"; // TODO - Remove this line.
 
-  audioService: AudioService = inject(AudioService);
+  private audioContext: AudioContextService = inject(AudioContextService); 
   sampleLibraryService: SampleLibraryService = inject(SampleLibraryService);
   
-  audioStateSubscription$ = this.audioService.onAudioStateChange.subscribe(audioState => {
+  audioStateSubscription$ = this.audioContext.onAudioStateChange.subscribe(audioState => {
     this.isAudioEnabled = audioState == 'running'
   });
 
@@ -37,7 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   enableAudio() {
-    this.audioService.resumeAudioContext();
+    this.audioContext.resumeAudioContext();
   }
 
   addNewTrack(sampleName: string) {

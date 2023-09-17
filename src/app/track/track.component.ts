@@ -1,7 +1,6 @@
 import { Component, Input, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AudioService } from '../audio.service';
-import { ThisReceiver } from '@angular/compiler';
 
 export interface TrackCell {
   active: boolean;
@@ -51,6 +50,6 @@ export class TrackComponent implements OnDestroy {
     this.activeCell = (this.activeCell + 1) % this.num_steps;
     if (this.cells[this.activeCell]?.active) {
       this.audioService.playSample(this.trackName, when);
-    } 
+    }
   }
 }

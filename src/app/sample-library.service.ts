@@ -1,9 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable, from } from 'rxjs';
+import { BehaviorSubject, from } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Firestore, collection, getDocs } from '@angular/fire/firestore';
 import { Storage, getBytes, ref } from '@angular/fire/storage';
-import { AudioService } from './audio.service';
 import { AudioContextService } from './audio-context.service';
 
 export interface Sample {
@@ -58,7 +57,7 @@ export class SampleLibraryService {
   async downloadSample(sample: Sample) {
     const pathReference = ref(this.storage, `samples/${sample.path}`);
     const arrayBuffer = await getBytes(pathReference);
-    const audioBuffer = await this.audio.context.decodeAudioData(arrayBuffer);
+    const audioBuffer = await this.audio.decodeAudioData(arrayBuffer);
     this.bufferMap.set(sample.name, audioBuffer);
     console.log(`downloaded ${sample.name}`);
   }
