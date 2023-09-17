@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AudioService } from '../audio.service';
+import { AudioService, TransportStatus } from '../audio.service';
+import { distinctUntilChanged, map } from 'rxjs';
 
 export interface TrackCell {
   active: boolean;
@@ -29,6 +30,10 @@ export class TrackComponent implements OnDestroy {
 
   audioService: AudioService = inject(AudioService);
   beatSubscription$ = this.audioService.onBeat.subscribe(this.selectNextCell.bind(this));
+  transportStopped$ = this.audioService.transportState$.pipe(
+    map(state => state.status === TransportStatus.STOPPED),
+    distinctUntilChanged()
+  ).subscribe(this.resetActiveStep.bind(this));
 
   @Input({required: true}) trackName!: string;
 
@@ -40,6 +45,7 @@ export class TrackComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.beatSubscription$.unsubscribe();
+    this.transportStopped$.unsubscribe();
   }
 
   onStepClicked(e: Event, i: number) {
@@ -51,5 +57,9 @@ export class TrackComponent implements OnDestroy {
     if (this.cells[this.activeCell]?.active) {
       this.audioService.playSample(this.trackName, when);
     }
+  }
+
+  private resetActiveStep() {
+    this.activeCell = -1;
   }
 }

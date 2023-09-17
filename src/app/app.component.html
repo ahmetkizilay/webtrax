@@ -1,4 +1,7 @@
 <button *ngIf="!isAudioEnabled" (click)="enableAudio()">Enable Audio</button>
 
-<button *ngIf="false" (click)="addNewTrack('kick')">New Track</button>
-<app-track *ngFor="let track of tracks" [trackName]="track.name"></app-track>
+<div>
+    <app-transport></app-transport>
+    <button *ngIf="false" (click)="addNewTrack('kick')">New Track</button>
+    <app-track *ngFor="let track of tracks" [trackName]="track.name"></app-track>
+</div>
