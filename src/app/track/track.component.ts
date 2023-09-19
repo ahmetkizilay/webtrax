@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, inject } from '@angular/core';
+import { Component, Input, OnDestroy, inject, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AudioService, TransportStatus } from '../audio.service';
 import { distinctUntilChanged, map } from 'rxjs';
@@ -13,7 +13,9 @@ export interface TrackCell {
   imports: [CommonModule],
   template: `
 <div class="track">
-  <label class="track-name">{{trackName}}</label>
+  <div class="track-header" (click)="onTrackSelected()">
+    <label class="track-name">{{trackName}}</label>
+  </div>
   <div *ngFor="let cell of cells; let i = index" 
       class="track-step" 
       [class.engaged]="cell.active"
@@ -23,7 +25,7 @@ export interface TrackCell {
   `,
   styleUrls: ['./track.component.css']
 })
-export class TrackComponent implements OnDestroy {
+export class TrackComponent implements OnInit, OnDestroy {
   readonly num_steps = 16;
   cells: TrackCell[] = [];
   activeCell = -1;
@@ -35,7 +37,8 @@ export class TrackComponent implements OnDestroy {
     distinctUntilChanged()
   ).subscribe(this.resetActiveStep.bind(this));
 
-  @Input({required: true}) trackName!: string;
+  @Input({ required: true }) trackName!: string;
+  @Output() trackSelect = new EventEmitter<string>();
 
   constructor() {
     for (let i = 0; i < this.num_steps; i++) {
@@ -43,13 +46,22 @@ export class TrackComponent implements OnDestroy {
     }
   }
 
+  ngOnInit(): void {
+    this.audioService.registerTrack(this.trackName);  
+  }
+
   ngOnDestroy(): void {
+    this.audioService.unregisterTrack(this.trackName);
     this.beatSubscription$.unsubscribe();
     this.transportStopped$.unsubscribe();
   }
 
   onStepClicked(e: Event, i: number) {
     this.cells[i].active = !this.cells[i].active;
+  }
+
+  onTrackSelected() {
+    this.trackSelect.emit(this.trackName);
   }
 
   private selectNextCell(when: number) {

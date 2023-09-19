@@ -7,6 +7,7 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { TrackComponent } from './track/track.component';
+import { TrackDetailComponent } from './track_detail/track_detail.component';
 import { TransportComponent } from './transport/transport.component';
 
 @NgModule({
@@ -16,6 +17,7 @@ import { TransportComponent } from './transport/transport.component';
   imports: [
     BrowserModule,
     TrackComponent,
+    TrackDetailComponent,
     TransportComponent,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),

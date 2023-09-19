@@ -57,6 +57,10 @@ export class AudioContextService {
     return this.context.createBufferSource();
   }
 
+  createGain() {
+    return this.context.createGain();
+  }
+
   private logStateChange() {
     switch (this.context.state) {
       case 'suspended':

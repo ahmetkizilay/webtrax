@@ -20,6 +20,16 @@ export interface TransportState {
   status: TransportStatus,
 };
 
+export interface TrackParams {
+  gain: number,
+};
+
+interface TrackNode {
+  name: string,
+  out: GainNode, 
+  params: TrackParams,
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -31,6 +41,8 @@ export class AudioService {
   private nextBeatTime = 0;
   private bpm = 128;
 
+  private tracks = new Map<string, TrackNode>();
+
   private transportStatus = TransportStatus.STOPPED;
 
   onBeat: ReplaySubject<number> = new ReplaySubject(1);
@@ -38,7 +50,7 @@ export class AudioService {
     bpm: this.bpm,
     status: this.transportStatus,
   });
-  
+
   private runScheduler() {
     animationFrameScheduler.schedule(function (payload: SchedulerPayload | undefined) {
       if (!payload?.checkStatus.call(undefined)) {
@@ -54,9 +66,18 @@ export class AudioService {
   }
 
   playSample(sampleName: string, when: number) {
+    let trackNode = this.tracks.get(sampleName);
+    if (!trackNode) {
+      console.error(`No track with name: ${'sampleName'}`);
+      return;
+    }
+
+    let outNode = trackNode.out; 
+    outNode.gain.setValueAtTime(trackNode.params.gain, when);
+
     let source = this.audio.createBufferSource();
     source.buffer = this.sampleLibrary.getSampleBuffer(sampleName);
-    source.connect(this.audio.getDestination());
+    source.connect(outNode);
     source.start(when);
     source.addEventListener('ended', () => {
       source.disconnect();
@@ -90,6 +111,44 @@ export class AudioService {
       bpm: this.bpm,
       status: this.transportStatus,
     });
+  }
+
+  registerTrack(name: string) {
+    console.log(`registered track: ${name}`);
+    let trackNode = {
+      name: name,
+      out: this.audio.createGain(),
+      params: {
+        gain: 1.0,
+      },
+    };
+    trackNode.out.connect(this.audio.getDestination());
+    this.tracks.set(name, trackNode);
+  }
+
+  unregisterTrack(name: string) {
+    console.log(`unregistered track: ${name}`);
+    this.tracks.delete(name);
+  }
+
+  getTrackParams(name: string) {
+    let trackNode = this.tracks.get(name);
+    if (!trackNode) {
+      console.error(`${name} is not a known track`);
+      return;
+    }
+
+    return trackNode.params;
+  }
+
+  setTrackParams(name: string, params: TrackParams) {
+    let trackNode = this.tracks.get(name);
+    if (!trackNode) {
+      console.error(`${name} is not a known track`);
+      return;
+    }
+
+    trackNode.params = params;
   }
 
   #tick() {

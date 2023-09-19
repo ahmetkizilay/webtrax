@@ -1,37 +1,58 @@
 div.track {
-    display: flex;
-    justify-content: flex-start;
-    column-gap: 4px;
-    margin-bottom: 8px;
-  }
-  div.track > div.track-step {
-    background-color: #b6d8b8;
-    width: 24px;
-    height: 24px;
-    border-radius: 4px;
-  }
-  
-  div.track > div.track-step:hover {
-    cursor: pointer;
-  }
-  
-  div.track > div.track-step.engaged {
-    background-color: #dc83a3;
-  }
-  
-  div.track > div.track-step.current {
-    filter: brightness(115%)
-  }
+  display: flex;
+  justify-content: flex-start;
+  column-gap: 4px;
+  margin-bottom: 8px;
+}
+div.track > div.track-header {
+  width: 24px;
+  height: 24px; 
+  width: 100px;
+  padding: 2px 2px 2px 8px;
+  box-sizing: border-box;
+  display: flex;
+  vertical-align: middle;
 
-  div.track > label.track-name {
-    display: inline-block;
-    width: 100px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    margin-right: 8px;
-  }
-  
-  div.track > label.track-name > span {
-    display: inline-block
-  }
+  margin-right: 4px;
+  cursor: pointer;
+  border-radius: 4px;
+
+  overflow: hidden;
+}
+
+div.track > div.track-header:hover {
+  background-color: #e7f3e8;
+}
+
+div.track > div.track-header > label.track-name {
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+div.track > div.track-step {
+  background-color: #b6d8b8;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+}
+
+
+
+div.track > div.track-step:hover {
+  cursor: pointer;
+}
+
+div.track > div.track-step.engaged {
+  background-color: #dc83a3;
+}
+
+div.track > div.track-step.current {
+  filter: brightness(115%)
+}
+
+
+div.track > label.track-name > span {
+  display: inline-block
+}

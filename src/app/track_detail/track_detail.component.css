@@ -1,0 +1,11 @@
+div.track-detail {
+  margin-top: 8px;
+}
+
+div.param-block {
+  display: flex;
+  margin: 8px 0;
+}
+div.param-block > label.param-name {
+  display: flex;
+}

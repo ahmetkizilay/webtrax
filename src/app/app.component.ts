@@ -21,6 +21,7 @@ export class AppComponent implements OnInit, OnDestroy {
   tracks: Sample[] = [];
 
   isAudioEnabled: boolean = false;
+  selectedTrack: string | null = null;
 
   ngOnInit(): void {
     // One-time subscription to load the template at the beginning.
@@ -47,6 +48,10 @@ export class AppComponent implements OnInit, OnDestroy {
     } else {
       console.error(`No sample found for ${sampleName}`);
     }
+  }
+
+  onTrackSelected(selectedTrack: string) {
+    this.selectedTrack = selectedTrack;
   }
 
   private loadNewTemplate() {

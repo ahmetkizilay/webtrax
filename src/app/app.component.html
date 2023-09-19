@@ -1,7 +1,10 @@
 <button *ngIf="!isAudioEnabled" (click)="enableAudio()">Enable Audio</button>
 
 <div>
-    <app-transport></app-transport>
-    <button *ngIf="false" (click)="addNewTrack('kick')">New Track</button>
-    <app-track *ngFor="let track of tracks" [trackName]="track.name"></app-track>
+  <app-transport></app-transport>
+  <button *ngIf="false" (click)="addNewTrack('kick')">New Track</button>
+  <app-track *ngFor="let track of tracks" [trackName]="track.name" (trackSelect)="onTrackSelected($event)"></app-track>
+</div>
+<div class="detail-container" *ngIf="selectedTrack">
+  <app-track-detail trackName="{{selectedTrack}}"></app-track-detail>
 </div>
