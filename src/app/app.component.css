@@ -2,3 +2,22 @@ div.detail-container {
     border-top: 1px solid #e8e8e8;;
     margin-top: 24px;
 }
+
+div.modal-audio {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.modal-audio > p {
+    font-size: 2em;
+    color: #fff;
+    text-align: center;
+}

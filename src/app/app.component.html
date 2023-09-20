@@ -1,5 +1,3 @@
-<button *ngIf="!isAudioEnabled" (click)="enableAudio()">Enable Audio</button>
-
 <div>
   <app-transport></app-transport>
   <button *ngIf="false" (click)="addNewTrack('kick')">New Track</button>
@@ -7,4 +5,8 @@
 </div>
 <div class="detail-container" *ngIf="selectedTrack">
   <app-track-detail trackName="{{selectedTrack}}"></app-track-detail>
+</div>
+<div class="modal-audio" *ngIf="!isAudioEnabled"
+    (click)="enableAudio()">
+  <p>Click anywhere to get started...</p>
 </div>
