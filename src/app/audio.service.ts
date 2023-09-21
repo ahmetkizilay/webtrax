@@ -22,11 +22,33 @@ export interface TransportState {
 
 export interface TrackParams {
   gain: number,
+  pan: number,
+};
+
+class TrackSignalChain {
+  private gain: GainNode;
+  private pan: StereoPannerNode;
+
+  constructor(audio: AudioContextService) {
+    this.gain = audio.createGain();
+    this.pan = audio.createStereoPanner();
+    this.gain.connect(this.pan);
+    this.pan.connect(audio.getDestination());
+  }
+
+  head() {
+    return this.gain;
+  }
+
+  updateParams(params: TrackParams, when: number) {
+    this.gain.gain.setValueAtTime(params.gain, when);
+    this.pan.pan.setValueAtTime(params.pan, when);
+  }
 };
 
 interface TrackNode {
   name: string,
-  out: GainNode, 
+  out: TrackSignalChain, 
   params: TrackParams,
 };
 
@@ -66,18 +88,18 @@ export class AudioService {
   }
 
   playSample(sampleName: string, when: number) {
-    let trackNode = this.tracks.get(sampleName);
-    if (!trackNode) {
+    let track = this.tracks.get(sampleName);
+    if (!track) {
       console.error(`No track with name: ${'sampleName'}`);
       return;
     }
 
-    let outNode = trackNode.out; 
-    outNode.gain.setValueAtTime(trackNode.params.gain, when);
+    let trackNode = track.out;
+    trackNode.updateParams(track.params, when);
 
     let source = this.audio.createBufferSource();
     source.buffer = this.sampleLibrary.getSampleBuffer(sampleName);
-    source.connect(outNode);
+    source.connect(trackNode.head());
     source.start(when);
     source.addEventListener('ended', () => {
       source.disconnect();
@@ -115,14 +137,15 @@ export class AudioService {
 
   registerTrack(name: string) {
     console.log(`registered track: ${name}`);
+    
     let trackNode = {
       name: name,
-      out: this.audio.createGain(),
+      out: new TrackSignalChain(this.audio),
       params: {
         gain: 1.0,
+        pan: 0,
       },
     };
-    trackNode.out.connect(this.audio.getDestination());
     this.tracks.set(name, trackNode);
   }
 
