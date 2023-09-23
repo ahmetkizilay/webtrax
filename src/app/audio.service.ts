@@ -87,7 +87,7 @@ export class AudioService {
     });
   }
 
-  playSample(sampleName: string, when: number) {
+  playSample(sampleName: string, when = 0) {
     let track = this.tracks.get(sampleName);
     if (!track) {
       console.error(`No track with name: ${'sampleName'}`);

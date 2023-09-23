@@ -30,3 +30,9 @@ https://firebase.google.com/docs/storage/web/download-files#cors_configuration
 ```
 gsutil cors set cloud_storage_cors.json gs://webtrax-1fc7d.appspot.com
 ```
+
+## Material Symbols
+
+Using Material symbols which is licensed under [Apache License 2.0](https://developers.google.com/fonts/docs/material_symbols#licensing).
+
+Use https://fonts.google.com/icons to browse through icons. 

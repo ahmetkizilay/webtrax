@@ -1,0 +1,21 @@
+ul.samples {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li.sample > div {
+  box-sizing: border-box;
+  padding: 4px;
+  border-bottom: 1px solid #eee;
+  display:flex; 
+  justify-content: space-between; 
+  align-items: center;
+}
+
+li.sample > div > button.play {
+  border:none; 
+  background:none; 
+  outline-style:none; 
+  cursor:pointer;
+} 

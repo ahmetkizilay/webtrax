@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { TrackComponent } from './track/track.component';
 import { TrackDetailComponent } from './track_detail/track_detail.component';
 import { TransportComponent } from './transport/transport.component';
+import { SampleListComponent } from './sample_list/sample_list.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { TransportComponent } from './transport/transport.component';
     TrackComponent,
     TrackDetailComponent,
     TransportComponent,
+    SampleListComponent,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage(getApp())),

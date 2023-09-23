@@ -23,6 +23,8 @@ export class AppComponent implements OnInit, OnDestroy {
   isAudioEnabled: boolean = false;
   selectedTrack: string | null = null;
 
+  isSampleLibraryVisible = false;
+
   ngOnInit(): void {
     // One-time subscription to load the template at the beginning.
     this.sampleLibraryService.onStatusChange$.pipe(
@@ -52,6 +54,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onTrackSelected(selectedTrack: string) {
     this.selectedTrack = selectedTrack;
+  }
+
+  toggleSampleLibrary() {
+    this.isSampleLibraryVisible = !this.isSampleLibraryVisible; 
   }
 
   private loadNewTemplate() {

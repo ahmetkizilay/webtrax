@@ -1,5 +1,35 @@
+div.main {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-content: stretch;
+    width: 100%;
+}
+
+div.main > div.left-bar {
+    padding-top: 8px;
+    margin-right: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+div.main > div.left-bar > button.toggle-btn {
+    border:none;
+    border-radius: 2px; 
+    background: #cecece; 
+    outline-style:none; 
+    cursor:pointer;
+    padding: 0;
+}
+
+div.main > div.left-bar > app-sample-list {
+    margin-top: 12px;
+    width: 196px;
+}
+
 div.detail-container {
-    border-top: 1px solid #e8e8e8;;
+    border-top: 1px solid #e8e8e8;
     margin-top: 24px;
 }
 
@@ -16,7 +46,7 @@ div.modal-audio {
     align-items: center;
 }
 
-div.modal-audio > p {
+div.modal-audio>p {
     font-size: 2em;
     color: #fff;
     text-align: center;

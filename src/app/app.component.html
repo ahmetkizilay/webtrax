@@ -1,10 +1,19 @@
-<div>
-  <app-transport></app-transport>
-  <button *ngIf="false" (click)="addNewTrack('kick')">New Track</button>
-  <app-track *ngFor="let track of tracks" [trackName]="track.name" (trackSelect)="onTrackSelected($event)"></app-track>
-</div>
-<div class="detail-container" *ngIf="selectedTrack">
-  <app-track-detail trackName="{{selectedTrack}}"></app-track-detail>
+<div class="main">
+  <div class="left-bar">
+    <button class="material-symbols-outlined toggle-btn" 
+    (click)="toggleSampleLibrary()">{{isSampleLibraryVisible ? "chevron_right" : "expand_more"}}</button>
+    <app-sample-list *ngIf="isSampleLibraryVisible"></app-sample-list>
+  </div>
+  <div style="width: 100%">
+    <div>
+      <app-transport></app-transport>
+      <button *ngIf="false" (click)="addNewTrack('kick')">New Track</button>
+      <app-track *ngFor="let track of tracks" [trackName]="track.name" (trackSelect)="onTrackSelected($event)"></app-track>
+    </div>
+    <div class="detail-container" *ngIf="selectedTrack">
+      <app-track-detail trackName="{{selectedTrack}}"></app-track-detail>
+    </div>
+  </div>
 </div>
 <div class="modal-audio" *ngIf="!isAudioEnabled"
     (click)="enableAudio()">

@@ -29,6 +29,7 @@ export class SampleLibraryService {
   onStatusChange$ = new BehaviorSubject(SampleLibraryStatus.UNINITIALIZED);
 
   samples: Sample[] = [];
+  samples$ = new BehaviorSubject<Sample[]>([]); 
 
   constructor() {
     const sampleCollection = collection(this.firestore, 'samples');
@@ -43,6 +44,7 @@ export class SampleLibraryService {
     ).subscribe(samples => {
       this.samples = samples;
       this.onStatusChange$.next(SampleLibraryStatus.INITIALIZED);
+      this.samples$.next(samples);
     });
   }
 
