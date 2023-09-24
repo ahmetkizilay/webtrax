@@ -69,6 +69,10 @@ export class AudioContextService {
     return this.context.createStereoPanner();
   }
 
+  createDelay() {
+    return this.context.createDelay();
+  }
+
   private logStateChange() {
     switch (this.context.state) {
       case 'suspended':

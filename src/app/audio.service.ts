@@ -24,17 +24,24 @@ export interface TrackParams {
   sampleId: string,
   gain: number,
   pan: number,
+  delaySend: number,
 };
 
 class TrackSignalChain {
   private gain: GainNode;
   private pan: StereoPannerNode;
+  private delaySend: GainNode;
 
-  constructor(audio: AudioContextService) {
+  constructor(audio: AudioContextService, mainOut: GainNode, delayOut: DelayNode) {
     this.gain = audio.createGain();
     this.pan = audio.createStereoPanner();
     this.gain.connect(this.pan);
-    this.pan.connect(audio.getDestination());
+    this.pan.connect(mainOut);
+
+    this.delaySend = audio.createGain();
+    this.delaySend.gain.setValueAtTime(0, 0);
+    this.delaySend.connect(delayOut);
+    this.pan.connect(this.delaySend);
   }
 
   head() {
@@ -44,6 +51,7 @@ class TrackSignalChain {
   updateParams(params: TrackParams, when: number) {
     this.gain.gain.setValueAtTime(params.gain, when);
     this.pan.pan.setValueAtTime(params.pan, when);
+    this.delaySend.gain.setValueAtTime(params.delaySend, when);
   }
 };
 
@@ -67,6 +75,17 @@ export class AudioService {
   private tracks = new Map<string, TrackNode>();
 
   private transportStatus = TransportStatus.STOPPED;
+  private delaySend: DelayNode;
+  private mainOut: GainNode;
+
+  constructor() {
+    this.mainOut = this.audio.createGain();
+    this.mainOut.connect(this.audio.getDestination());
+    
+    this.delaySend = this.audio.createDelay();
+    this.delaySend.delayTime.setValueAtTime(60 / (this.bpm * 2), 0);
+    this.delaySend.connect(this.mainOut);
+  }
 
   onBeat: ReplaySubject<number> = new ReplaySubject(1);
   transportState$: BehaviorSubject<TransportState> = new BehaviorSubject({
@@ -130,6 +149,8 @@ export class AudioService {
 
   setBpm(val: number) {
     this.bpm = val;
+    // Hard-code the delay-time relative to the beat
+    this.delaySend.delayTime.setValueAtTime(60 / (this.bpm * 2), 0);
     this.transportState$.next({
       bpm: this.bpm,
       status: this.transportStatus,
@@ -141,11 +162,12 @@ export class AudioService {
     
     let trackNode = {
       name: name,
-      out: new TrackSignalChain(this.audio),
+      out: new TrackSignalChain(this.audio, this.mainOut, this.delaySend),
       params: {
         sampleId: name,
         gain: 1.0,
         pan: 0,
+        delaySend: 0,
       },
     };
     this.tracks.set(name, trackNode);
