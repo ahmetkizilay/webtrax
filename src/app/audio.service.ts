@@ -1,7 +1,6 @@
-import { Injectable, inject } from '@angular/core';
+import { Inject, Injectable, inject } from '@angular/core';
 import { animationFrameScheduler, BehaviorSubject, ReplaySubject } from 'rxjs';
 import { SampleLibraryService } from './sample-library.service';
-import { AudioContextService, AudioContextState } from './audio-context.service';
 
 export enum TransportStatus {
   UNKNOWN,
@@ -32,7 +31,7 @@ class TrackSignalChain {
   private pan: StereoPannerNode;
   private delaySend: GainNode;
 
-  constructor(audio: AudioContextService, mainOut: GainNode, delayOut: DelayNode) {
+  constructor(audio: AudioContext, mainOut: GainNode, delayOut: DelayNode) {
     this.gain = audio.createGain();
     this.pan = audio.createStereoPanner();
     this.gain.connect(this.pan);
@@ -65,7 +64,7 @@ interface TrackNode {
   providedIn: 'root'
 })
 export class AudioService {
-  private audio: AudioContextService = inject(AudioContextService);
+  private audio: AudioContext;
   private sampleLibrary: SampleLibraryService = inject(SampleLibraryService);
 
   private readonly lookAheadTime = 0.01;
@@ -78,9 +77,10 @@ export class AudioService {
   private delaySend: DelayNode;
   private mainOut: GainNode;
 
-  constructor() {
+  constructor(audioContext: AudioContext) {
+    this.audio = audioContext;
     this.mainOut = this.audio.createGain();
-    this.mainOut.connect(this.audio.getDestination());
+    this.mainOut.connect(this.audio.destination);
     
     this.delaySend = this.audio.createDelay();
     this.delaySend.delayTime.setValueAtTime(60 / (this.bpm * 2), 0);
@@ -199,13 +199,13 @@ export class AudioService {
   }
 
   #tick() {
-    if (this.audio.getState() !== AudioContextState.RUNNING) {
+    if (this.audio.state !== 'running') {
       return;
     }
 
-    if (this.audio.getCurrentTime() + this.lookAheadTime >= this.nextBeatTime) {
-      this.onBeat.next(Math.max(0, this.nextBeatTime - this.audio.getCurrentTime()));
-      this.nextBeatTime = Math.max(this.nextBeatTime, this.audio.getCurrentTime()) + (60 / this.bpm);
+    if (this.audio.currentTime + this.lookAheadTime >= this.nextBeatTime) {
+      this.onBeat.next(Math.max(0, this.nextBeatTime - this.audio.currentTime));
+      this.nextBeatTime = Math.max(this.nextBeatTime, this.audio.currentTime) + (60 / this.bpm);
     }
   }
 

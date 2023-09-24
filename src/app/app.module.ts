@@ -31,6 +31,7 @@ import { SampleListComponent } from './sample_list/sample_list.component';
     // provideAnalytics(() => getAnalytics()),
   ],
   providers: [
+    { provide: AudioContext, useValue: new AudioContext() },
   ],
   bootstrap: [AppComponent]
 })

@@ -3,7 +3,6 @@ import { BehaviorSubject, from } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Firestore, collection, getDocs } from '@angular/fire/firestore';
 import { Storage, getBytes, ref } from '@angular/fire/storage';
-import { AudioContextService } from './audio-context.service';
 
 export interface Sample {
   name: string,
@@ -21,7 +20,7 @@ export enum SampleLibraryStatus {
   providedIn: 'root',
 })
 export class SampleLibraryService {
-  private audio: AudioContextService = inject(AudioContextService);
+  private audio: AudioContext;
   private firestore: Firestore = inject(Firestore);
   private storage: Storage = inject(Storage);
   private bufferMap = new Map<string, AudioBuffer>();
@@ -31,7 +30,8 @@ export class SampleLibraryService {
   samples: Sample[] = [];
   samples$ = new BehaviorSubject<Sample[]>([]); 
 
-  constructor() {
+  constructor(audioContext: AudioContext) {
+    this.audio = audioContext;
     const sampleCollection = collection(this.firestore, 'samples');
     from(getDocs(sampleCollection)).pipe(
       map(docs => docs.docs.map(doc => doc.data() as Sample)),
