@@ -17,7 +17,9 @@ interface SampleItem {
 <label>SAMPLES</label>
 <ul class="samples">
   <li *ngFor="let sample of samples$ | async" class="sample">
-    <div>
+    <div draggable="true" 
+      (dragstart)="handleDragStart($event, sample.name)"
+      (dragenter)="cancelEvent($event)" (dragover)="cancelEvent($event)">
       <label>{{sample.name}}</label>
       <button class="material-symbols-outlined play"
         title="Play sample"
@@ -43,5 +45,17 @@ export class SampleListComponent {
 
   playSample(sample: string) {
     this.audioService.playSample(sample);
+  }
+
+  handleDragStart(ev:Event, name: string) {
+    let e = ev as DragEvent;
+    if (e.dataTransfer) {
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('sample', name);
+    }
+  }
+
+  cancelEvent(e: Event) {
+    e.preventDefault();
   }
 }

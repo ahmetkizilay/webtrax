@@ -21,6 +21,7 @@ export interface TransportState {
 };
 
 export interface TrackParams {
+  sampleId: string,
   gain: number,
   pan: number,
 };
@@ -98,7 +99,7 @@ export class AudioService {
     trackNode.updateParams(track.params, when);
 
     let source = this.audio.createBufferSource();
-    source.buffer = this.sampleLibrary.getSampleBuffer(sampleName);
+    source.buffer = this.sampleLibrary.getSampleBuffer(track.params.sampleId);
     source.connect(trackNode.head());
     source.start(when);
     source.addEventListener('ended', () => {
@@ -142,6 +143,7 @@ export class AudioService {
       name: name,
       out: new TrackSignalChain(this.audio),
       params: {
+        sampleId: name,
         gain: 1.0,
         pan: 0,
       },

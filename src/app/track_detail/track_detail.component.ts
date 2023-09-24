@@ -8,7 +8,8 @@ import { AudioService, TrackParams } from '../audio.service';
   imports: [CommonModule],
   template: `
 <div class="track-detail">
-  <div>
+  <div (drop)="handleDrop($event)"
+      (dragenter)="cancelEvent($event)" (dragover)="cancelEvent($event)">
     <label>Track Detail: </label>
     <label>{{trackName}}</label>
   </div>
@@ -54,5 +55,22 @@ export class TrackDetailComponent implements OnChanges {
     this.trackParams.pan = (el.valueAsNumber - 50.) / 50.;
     console.log(this.trackParams.pan);
     this.audio.setTrackParams(this.trackName, this.trackParams);
+  }
+
+  handleDrop(ev: Event) {
+    ev.stopPropagation();
+
+    let e = ev as DragEvent;
+    const data = e.dataTransfer?.getData("sample");
+    if (data) {
+      this.trackParams.sampleId = data;
+      this.audio.setTrackParams(this.trackName, this.trackParams);
+    }
+    
+    return false;
+  }
+
+  cancelEvent(e: Event) {
+    e.preventDefault();
   }
 }
