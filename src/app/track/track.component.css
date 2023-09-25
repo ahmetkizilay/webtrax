@@ -52,6 +52,9 @@ div.track > div.track-step.current {
   filter: brightness(115%)
 }
 
+div.track > div.track-step.separated {
+  margin-right: 4px;
+}
 
 div.track > label.track-name > span {
   display: inline-block

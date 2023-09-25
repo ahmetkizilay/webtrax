@@ -20,6 +20,7 @@ export interface TrackCell {
       class="track-step" 
       [class.engaged]="cell.active"
       [class.current]="i === activeCell"
+      [class.separated]="i % 4 == 3"
       (click)="onStepClicked($event, i)"></div>
 </div>
   `,
