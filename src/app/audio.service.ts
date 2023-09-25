@@ -70,6 +70,7 @@ export class AudioService {
   private readonly lookAheadTime = 0.01;
   private nextBeatTime = 0;
   private bpm = 128;
+  private divOfBeat = 4;
 
   private tracks = new Map<string, TrackNode>();
 
@@ -205,11 +206,15 @@ export class AudioService {
 
     if (this.audio.currentTime + this.lookAheadTime >= this.nextBeatTime) {
       this.onBeat.next(Math.max(0, this.nextBeatTime - this.audio.currentTime));
-      this.nextBeatTime = Math.max(this.nextBeatTime, this.audio.currentTime) + (60 / this.bpm);
+      this.nextBeatTime = Math.max(this.nextBeatTime, this.audio.currentTime) + this.timeToEvent();
     }
   }
 
   #isTransportRunning() {
     return this.transportStatus === TransportStatus.PLAYING;
+  }
+
+  private timeToEvent() {
+    return 60 / (this.bpm * this.divOfBeat);
   }
 }
