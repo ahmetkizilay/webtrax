@@ -8,10 +8,14 @@ import { AudioService, TrackParams } from '../audio.service';
   imports: [CommonModule],
   template: `
 <div class="track-detail">
-  <div (drop)="handleDrop($event)"
-      (dragenter)="cancelEvent($event)" (dragover)="cancelEvent($event)">
+  <div>
     <label>Track Detail: </label>
     <label>{{trackName}}</label>
+  </div>
+  <div class="param-block" (drop)="handleDrop($event)"
+      (dragenter)="cancelEvent($event)" (dragover)="cancelEvent($event)">
+    <label class="param-name">Sample: </label>
+    <label>{{trackParams.sampleId}}</label>
   </div>
   <div class="param-block">
     <label class="param-name">Gain:</label>

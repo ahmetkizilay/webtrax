@@ -8,4 +8,5 @@ div.param-block {
 }
 div.param-block > label.param-name {
   display: flex;
+  margin-right: 8px;
 }

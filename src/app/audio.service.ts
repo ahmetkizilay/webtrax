@@ -108,10 +108,10 @@ export class AudioService {
     });
   }
 
-  playSample(sampleName: string, when = 0) {
-    let track = this.tracks.get(sampleName);
+  playSample(trackName: string, when = 0) {
+    let track = this.tracks.get(trackName);
     if (!track) {
-      console.error(`No track with name: ${'sampleName'}`);
+      console.error(`No track with name: ${'trackName'}`);
       return;
     }
 
