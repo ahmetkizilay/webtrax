@@ -57,10 +57,11 @@ export class SampleLibraryService {
   }
 
   async downloadSample(sample: Sample) {
-    const pathReference = ref(this.storage, `samples/${sample.path}`);
-    const arrayBuffer = await getBytes(pathReference);
-    const audioBuffer = await this.audio.decodeAudioData(arrayBuffer);
-    this.bufferMap.set(sample.name, audioBuffer);
-    console.log(`downloaded ${sample.name}`);
+    // const pathReference = ref(this.storage, `samples/${sample.path}`);
+    // const arrayBuffer = await getBytes(pathReference);
+    // const audioBuffer = await this.audio.decodeAudioData(arrayBuffer);
+    // this.bufferMap.set(sample.name, audioBuffer);
+    // console.log(`downloaded ${sample.name}`);
+    console.warn('downloads disabled');
   }
 }
