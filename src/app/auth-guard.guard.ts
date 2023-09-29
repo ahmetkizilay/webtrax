@@ -3,7 +3,11 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { of, switchMap } from 'rxjs';
 
-export const authGuardGuard: CanActivateFn = (route, state) => {
+export const allWelcome: CanActivateFn = () => {
+  return true;
+}
+
+export const loggedInGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
   return authService.isSignedIn$.pipe(switchMap(isSignedIn => {
