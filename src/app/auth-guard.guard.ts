@@ -6,10 +6,9 @@ import { of, switchMap } from 'rxjs';
 export const authGuardGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
-
   return authService.isSignedIn$.pipe(switchMap(isSignedIn => {
     if (!isSignedIn) {
-      router.navigate(["/login"]);
+      router.navigate(["/auth"]);
     }
     return of(isSignedIn);
   }));

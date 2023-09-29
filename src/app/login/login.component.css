@@ -1,0 +1,24 @@
+div.form-wrapper {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    flex-direction: column;
+    align-items: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+div.input-row {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin: 4px 0;
+}
+
+div.input-row > label {
+    width: 128px;
+}

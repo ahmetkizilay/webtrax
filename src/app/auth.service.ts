@@ -1,6 +1,10 @@
-import { Injectable, OnDestroy, inject} from '@angular/core';
-import { Auth, User, authState, signInWithEmailAndPassword, signInWithEmailLink, signOut } from '@angular/fire/auth';
+import { Injectable, OnDestroy, inject } from '@angular/core';
+import { Auth, User, authState, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
 import { ReplaySubject, Subscription } from 'rxjs';
+
+interface AuthError {
+  code: string;
+};
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +17,8 @@ export class AuthService implements OnDestroy {
 
   isSignedIn$ = new ReplaySubject<boolean>(1);
 
-  constructor() { 
-    this.authStateSubscription = this.authState$.subscribe((user: User|null) => {
+  constructor() {
+    this.authStateSubscription = this.authState$.subscribe((user: User | null) => {
       this.isSignedIn = user !== null;
       this.isSignedIn$.next(this.isSignedIn);
       console.log(`auth state changed: ${this.isSignedIn}`);
@@ -30,8 +34,25 @@ export class AuthService implements OnDestroy {
   }
 
   async login(email: string, password: string) {
-    await signInWithEmailAndPassword(this.auth, email, password);
-    return true;
+    try {
+      await signInWithEmailAndPassword(this.auth, email, password);
+      return true;
+    }
+    catch (e) {
+      console.error((e as AuthError).code);
+      return false;
+    }
+  }
+
+  async signup(email: string, password: string) {
+    try {
+      await createUserWithEmailAndPassword(this.auth, email, password);
+      return true;
+    } 
+    catch (e) {
+      console.error((e as AuthError).code);
+      return false;
+    }
   }
 
   async logout() {
