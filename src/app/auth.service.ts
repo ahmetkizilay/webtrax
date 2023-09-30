@@ -6,6 +6,10 @@ interface AuthError {
   code: string;
 };
 
+export interface CurrentUser {
+  uid: string;
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,11 +21,17 @@ export class AuthService implements OnDestroy {
 
   isSignedIn$ = new ReplaySubject<boolean>(1);
 
+  private currentUser: CurrentUser | null = null;
+
   constructor() {
     this.authStateSubscription = this.authState$.subscribe((user: User | null) => {
       this.isSignedIn = user !== null;
       this.isSignedIn$.next(this.isSignedIn);
+      this.currentUser = user ? {
+        uid: user.uid,
+      } : null;
       console.log(`auth state changed: ${this.isSignedIn}`);
+      console.log(`userId: ${this.currentUser?.uid}`);
     });
   }
 
@@ -53,6 +63,10 @@ export class AuthService implements OnDestroy {
       console.error((e as AuthError).code);
       return false;
     }
+  }
+
+  getCurrentUserId(): string | null {
+    return this.currentUser ? this.currentUser.uid : null;
   }
 
   async logout() {

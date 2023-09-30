@@ -1,8 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, from } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { Firestore, collection, getDocs } from '@angular/fire/firestore';
+import { Firestore, collection, getDocs, query, where } from '@angular/fire/firestore';
 import { Storage, getBytes, ref } from '@angular/fire/storage';
+import { AuthService } from './auth.service';
 
 export interface Sample {
   name: string,
@@ -23,6 +24,8 @@ export class SampleLibraryService {
   private audio: AudioContext;
   private firestore: Firestore = inject(Firestore);
   private storage: Storage = inject(Storage);
+  private auth: AuthService = inject(AuthService);
+
   private bufferMap = new Map<string, AudioBuffer>();
 
   onStatusChange$ = new BehaviorSubject(SampleLibraryStatus.UNINITIALIZED);
@@ -33,7 +36,7 @@ export class SampleLibraryService {
   constructor(audioContext: AudioContext) {
     this.audio = audioContext;
     const sampleCollection = collection(this.firestore, 'samples');
-    from(getDocs(sampleCollection)).pipe(
+    from(getDocs(query(sampleCollection, where("owner", "==", null)))).pipe(
       map(docs => docs.docs.map(doc => doc.data() as Sample)),
       tap(samples => {
         // TODO - local caching?

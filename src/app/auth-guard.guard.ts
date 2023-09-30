@@ -7,7 +7,7 @@ export const allWelcome: CanActivateFn = () => {
   return true;
 }
 
-export const loggedInGuard: CanActivateFn = () => {
+export const requireLogin: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
   return authService.isSignedIn$.pipe(switchMap(isSignedIn => {
