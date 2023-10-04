@@ -1,10 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Storage, ref, uploadBytes } from '@angular/fire/storage';
 import { Firestore, addDoc, collection } from '@angular/fire/firestore';
 import { AuthService } from '../auth.service';
 import { environment } from '../../environments/environment';
+import { SampleLibraryService, Sample } from '../sample-library.service';
+import { Subscription } from 'rxjs';
 
 interface FirestoreSample {
   name: string,
@@ -19,39 +21,66 @@ interface FirestoreSample {
     ReactiveFormsModule],
   template: `
 <div class="form-wrapper">
-  <form [formGroup]="uploadForm" (submit)="upload()">
+  <form [formGroup]="uploadForm">
     <div class="input-row">
-      <label for="file">File</label>
-      <input id="file" type="file" formControlName="file" (change)="onFileChange($event)" multiple>
+      <input id="file" type="file" class="upload"
+        title="&nbsp;" value=""
+        accept="audio/wav"
+        formControlName="file" 
+        (change)="onFileChange($event)" multiple>
     </div>
-    <button type="submit" class="primary">Upload</button>
   </form>
+</div>
+<div class="sample-list">
+  <ul>
+    <li *ngFor="let f of files">{{f.name}}</li>
+  </ul>
 </div>
   `,
   styleUrls: ['./samples.component.css']
 })
-export class SamplesComponent {
+export class SamplesComponent implements OnDestroy {
   private readonly storage: Storage = inject(Storage);
   private readonly firestore: Firestore = inject(Firestore);
   private readonly auth: AuthService = inject(AuthService);
+  private readonly sampleLibrary: SampleLibraryService = inject(SampleLibraryService);
 
-  private files: File[] = [];
+  files: Sample[] = [];
+  userSamplesSub = this.sampleLibrary.userSamples$.subscribe(samples => {
+    this.files = samples; 
+  });
 
   uploadForm = new FormGroup({
     file: new FormControl(''),
   });
 
-  onFileChange(e: Event) {
-    const newFiles = (e.target as HTMLInputElement).files;
-    if (!newFiles) {
-      return;
-    }
-    for(let i = 0; i < newFiles.length; i+= 1) {
-      this.files.push(newFiles.item(0)!);
-    }
+  ngOnDestroy(): void {
+    this.userSamplesSub.unsubscribe();
   }
 
-  upload() {
+  onFileChange(e: Event) {
+    const rawFiles = (e.target as HTMLInputElement).files;
+    if (!rawFiles) {
+      return;
+    }
+    const files = Array.from(rawFiles);
+    // validate 
+    // file type
+    for (let file of files) {
+      if (file.type !== 'audio/wav') {
+        console.log(`${file.name} is not a supported audio file.`);
+        return;
+      }
+      if (file.size > 5_000_000) {
+        console.log(`${file.name} is larger than 5MB.`);
+        return;
+      }
+    }
+
+    this.upload(files);
+  }
+
+  private upload(files: File[]) {
     const userId = this.auth.getCurrentUserId();
     if (!userId) {
       // This should never be the case, because this component is auth-guarded.
@@ -64,15 +93,15 @@ export class SamplesComponent {
     const samplesBucket = `gs://${environment.firebase.storageBucket}`;
     let uploads = [];
     const now = Date.now();
-    for (let i = 0; i < this.files.length; i += 1) {
-      const file = this.files[i];
+    for (let i = 0; i < files.length; i += 1) {
+      const file = files[i];
       const bucketPath = `samples/${userId}/${now}_${i}/${file.name}`;
       const storageRef = ref(this.storage, `${samplesBucket}/${bucketPath}`);
       uploads.push(Promise.all([
         // Cloud Storage
         uploadBytes(storageRef, file),
         // Firestore
-        addDoc(samplesCollection, <FirestoreSample> {
+        addDoc(samplesCollection, <FirestoreSample>{
           name: file.name,
           path: bucketPath,
           owner: userId,

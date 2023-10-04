@@ -25,11 +25,12 @@ export class AuthService implements OnDestroy {
 
   constructor() {
     this.authStateSubscription = this.authState$.subscribe((user: User | null) => {
-      this.isSignedIn = user !== null;
-      this.isSignedIn$.next(this.isSignedIn);
       this.currentUser = user ? {
         uid: user.uid,
       } : null;
+      this.isSignedIn = user !== null;
+      this.isSignedIn$.next(this.isSignedIn);
+     
       console.log(`auth state changed: ${this.isSignedIn}`);
       console.log(`userId: ${this.currentUser?.uid}`);
     });

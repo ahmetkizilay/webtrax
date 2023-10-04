@@ -1,9 +1,10 @@
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, from } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, from } from 'rxjs';
+import { distinctUntilChanged, filter, first, map, sample, switchMap, tap } from 'rxjs/operators';
 import { Firestore, collection, getDocs, query, where } from '@angular/fire/firestore';
 import { Storage, getBytes, ref } from '@angular/fire/storage';
 import { AuthService } from './auth.service';
+import { collectionData } from 'rxfire/firestore';
 
 export interface Sample {
   name: string,
@@ -31,7 +32,14 @@ export class SampleLibraryService {
   onStatusChange$ = new BehaviorSubject(SampleLibraryStatus.UNINITIALIZED);
 
   samples: Sample[] = [];
-  samples$ = new BehaviorSubject<Sample[]>([]); 
+  samples$ = new BehaviorSubject<Sample[]>([]);
+  userSamples$ = this.auth.isSignedIn$.pipe(
+    filter(val => val),
+    distinctUntilChanged(),
+    switchMap(() => {
+      const sampleCollection = collection(this.firestore, 'samples');
+      return collectionData(query(sampleCollection, where('owner', '==', this.auth.getCurrentUserId()!)));
+    }), map(docs => docs.map(doc => doc as Sample)));;
 
   constructor(audioContext: AudioContext) {
     this.audio = audioContext;
@@ -51,11 +59,11 @@ export class SampleLibraryService {
     });
   }
 
-  getSample(name: string): Sample|undefined {
+  getSample(name: string): Sample | undefined {
     return this.samples.find(sample => sample.name === name);
   }
 
-  getSampleBuffer(name: string) : AudioBuffer|null {
+  getSampleBuffer(name: string): AudioBuffer | null {
     return this.bufferMap.get(name) ?? null;
   }
 
