@@ -90,7 +90,7 @@ export class SamplesComponent implements OnDestroy {
 
     const samplesCollection = collection(this.firestore, 'samples');
 
-    const samplesBucket = `gs://${environment.firebase.storageBucket}`;
+    const samplesBucket = `gs://${environment.firebase.config.storageBucket}`;
     let uploads = [];
     const now = Date.now();
     for (let i = 0; i < files.length; i += 1) {
