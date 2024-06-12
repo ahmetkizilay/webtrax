@@ -6,7 +6,7 @@ __EXPERIMENTAL__: This repository is at a very early stage. Everything will chan
 
 Currently using [idx.dev](https://idx.dev) to develop this project. Deploying directly into [Firebase Hosting](https://firebase.google.com/docs/hosting).
 
-To demo it on Firebase: https://webtrax-1fc7d.web.app/
+To demo it on Firebase: https://wx.cryn.dev
 
 To demo it on IDX: https://9000-monospace-webtrax-ng-1694359528583.cluster-lknrrkkitbcdsvoir6wqg4mwt6.cloudworkstations.dev/
 
