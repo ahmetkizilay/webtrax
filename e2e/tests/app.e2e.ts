@@ -11,12 +11,18 @@ describe('Auth Test', function () {
 
   it('loads the login page', async function() {
     const {page} = getBrowserState();
-    // Waiting for an element to exist on the page, so we know the page is loaded.
-    await page.locator('button').wait();
-    console.log('page ready');
 
-    const loginButton = await page.locator('button').wait();
-    expect(loginButton).not.toBeNull();
+    await page.locator('#email').fill('user1@test.com');
+    await page.locator('#password').fill('X7gH5jK9mN1pQrStU3ZaB3Df');
+    await page.locator('button::-p-text(Login)').click();
+    console.log('after click');
+
+    await page.waitForNavigation();
+    console.log('after navigation');
+
+    // we should be on the home page
+    expect(page.url()).toBe('http://localhost:4200/');
+
   });
 
 });
