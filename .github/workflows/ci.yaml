@@ -1,0 +1,29 @@
+name: CI
+run-name: ${{ github.actor }} triggered pull request
+on:
+  pull_request:
+    branches:
+      - 'main'
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo " The job was automatically triggered by a ${{ github.event_name }} event."
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Setup Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/iron'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+      - name: Install and build dependencies
+        run: |
+          npm ci
+          npm install firebase-tools
+      - name: Run e2e tests
+        run: npm run e2e
+      - name: Build
+        run: npm run build -- --configuration=production
