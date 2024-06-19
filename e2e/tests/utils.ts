@@ -8,7 +8,7 @@ let page: puppeteer.Page;
 export function setupBrowserHooks(path = ''): void {
 
   beforeAll(async () => {
-    browser = await puppeteer.launch();
+    browser = await puppeteer.launch({headless: true, devtools: false});
   });
 
 

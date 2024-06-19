@@ -1,15 +1,12 @@
 {
   "emulators": {
     "auth": {
-      "host": "9099-monospace-webtrax-ng-1694359528583.cluster-lknrrkkitbcdsvoir6wqg4mwt6.cloudworkstations.dev",
       "port": 9099
     },
     "firestore": {
-      "host": "8080-monospace-webtrax-ng-1694359528583.cluster-lknrrkkitbcdsvoir6wqg4mwt6.cloudworkstations.dev",
       "port": 8080
     },
     "storage": {
-      "host": "9199-monospace-webtrax-ng-1694359528583.cluster-lknrrkkitbcdsvoir6wqg4mwt6.cloudworkstations.dev",
       "port": 9199
     },
     "ui": {
