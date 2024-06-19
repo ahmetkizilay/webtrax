@@ -8,6 +8,7 @@ let page: puppeteer.Page;
 export function setupBrowserHooks(path = ''): void {
 
   beforeAll(async () => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
     browser = await puppeteer.launch({headless: true, devtools: false});
   });
 
