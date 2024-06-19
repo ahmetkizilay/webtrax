@@ -98,6 +98,18 @@
             "version": 2,
             "browserTarget": "MyApp:build:production"
           }
+        },
+        "e2e": {
+          "builder": "@puppeteer/ng-schematics:puppeteer",
+          "options": {
+            "devServerTarget": "MyApp:serve",
+            "testRunner": "jasmine"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "MyApp:serve:production"
+            }
+          }
         }
       }
     }
