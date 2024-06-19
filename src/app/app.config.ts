@@ -19,14 +19,14 @@ export const appConfig: ApplicationConfig = {
         provideAuth(() => {
             const auth = getAuth();
             if (environment.firebase.emulators.auth) {
-                connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+                connectAuthEmulator(auth, 'https://9000-monospace-webtrax-ng-1694359528583.cluster-lknrrkkitbcdsvoir6wqg4mwt6.cloudworkstations.dev:9099', { disableWarnings: true });
             }
             return auth;
         }),
         provideFirestore(() => {
             const firestore = getFirestore();
             if (environment.firebase.emulators.firestore) {
-                connectFirestoreEmulator(firestore, 'localhost', 8080);
+                connectFirestoreEmulator(firestore, 'https://9000-monospace-webtrax-ng-1694359528583.cluster-lknrrkkitbcdsvoir6wqg4mwt6.cloudworkstations.dev', 8080);
             }
             return firestore
         }),

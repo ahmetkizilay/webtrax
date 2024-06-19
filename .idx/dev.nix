@@ -3,6 +3,7 @@
   packages = [
     pkgs.nodejs_20
     pkgs.npm-check-updates
+    pkgs.jre_minimal
   ];
   idx.extensions = [
 
