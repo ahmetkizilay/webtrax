@@ -1,0 +1,22 @@
+{
+  "name": "make_admin",
+  "version": "1.0.0",
+  "main": "lib/make_admin.js",
+  "scripts": {
+    "build": "tsc",
+    "run": "node lib/make_admin.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.24.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2"
+  },
+  "dependencies": {
+    "firebase": "^10.12.2",
+    "firebase-admin": "^12.2.0"
+  }
+}
