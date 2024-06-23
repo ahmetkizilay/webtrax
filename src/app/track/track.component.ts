@@ -1,7 +1,8 @@
 import { Component, Input, OnDestroy, inject, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AudioService, TransportStatus } from '../audio.service';
+import { AudioService  } from '../audio.service';
 import { distinctUntilChanged, map } from 'rxjs';
+import { TransportService, TransportStatus } from '../transport/transport.service';
 
 export interface TrackCell {
   active: boolean;
@@ -16,8 +17,8 @@ export interface TrackCell {
   <div class="track-header" (click)="onTrackSelected()">
     <label class="track-name">{{trackName}}</label>
   </div>
-  <div *ngFor="let cell of cells; let i = index" 
-      class="track-step" 
+  <div *ngFor="let cell of cells; let i = index"
+      class="track-step"
       [class.engaged]="cell.active"
       [class.current]="i === activeCell"
       [class.separated]="i % 4 == 3"
@@ -31,9 +32,10 @@ export class TrackComponent implements OnInit, OnDestroy {
   cells: TrackCell[] = [];
   activeCell = -1;
 
+  transportService: TransportService = inject(TransportService);
   audioService: AudioService = inject(AudioService);
-  beatSubscription$ = this.audioService.onBeat.subscribe(this.selectNextCell.bind(this));
-  transportStopped$ = this.audioService.transportState$.pipe(
+  beatSubscription$ = this.transportService.onBeat.subscribe(this.selectNextCell.bind(this));
+  transportStopped$ = this.transportService.transportState$.pipe(
     map(state => state.status === TransportStatus.STOPPED),
     distinctUntilChanged()
   ).subscribe(this.resetActiveStep.bind(this));
@@ -48,7 +50,7 @@ export class TrackComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.audioService.registerTrack(this.trackName);  
+    this.audioService.registerTrack(this.trackName);
   }
 
   ngOnDestroy(): void {

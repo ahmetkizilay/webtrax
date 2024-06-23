@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AudioService, TransportStatus } from '../audio.service';
+import { TransportService, TransportStatus } from './transport.service';
 import { distinctUntilChanged, map, tap } from 'rxjs';
 
 @Component({
@@ -18,30 +18,30 @@ import { distinctUntilChanged, map, tap } from 'rxjs';
   styleUrls: ['./transport.component.css']
 })
 export class TransportComponent {
-  private audio: AudioService = inject(AudioService);
-  bpm$ = this.audio.transportState$.pipe(
+  private transportService: TransportService = inject(TransportService);
+  bpm$ = this.transportService.transportState$.pipe(
     map(state => state.bpm),
     distinctUntilChanged()
   );
-  isPlaying$ = this.audio.transportState$.pipe(
+  isPlaying$ = this.transportService.transportState$.pipe(
     map(state => state.status === TransportStatus.PLAYING),
     distinctUntilChanged()
   );
-  isStopped$ = this.audio.transportState$.pipe(
+  isStopped$ = this.transportService.transportState$.pipe(
     map(state => state.status === TransportStatus.STOPPED),
     distinctUntilChanged()
   );
 
   onClickPlay() {
-    this.audio.start();
+    this.transportService.start();
   }
 
   onClickStop() {
-    this.audio.stop();
+    this.transportService.stop();
   }
 
   onBpmChange(e: Event) {
     const el = e.target as HTMLInputElement;
-    this.audio.setBpm(el.valueAsNumber);
+    this.transportService.setBpm(el.valueAsNumber);
   }
 }
