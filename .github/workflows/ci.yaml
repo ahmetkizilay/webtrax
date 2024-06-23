@@ -25,6 +25,8 @@ jobs:
           npm install firebase-tools
       - name: Run unit tests
         run: npm run test:ci
+      - name: Run firestore rules tests
+        run: npm run test:firestore-rules
       - name: Run e2e tests
         run: npm run e2e
       - name: Build
