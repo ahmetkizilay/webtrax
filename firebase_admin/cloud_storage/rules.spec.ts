@@ -28,7 +28,7 @@ describe('Firestore rules', () => {
     testEnv = await initializeTestEnvironment({
       projectId: 'my-test-project',
       storage: {
-        rules: readFileSync('./cloud_storage/storage.rules', 'utf8'),
+        rules: readFileSync('./firebase_admin/cloud_storage/storage.rules', 'utf8'),
         host: 'localhost',
         port: 9199,
       }
