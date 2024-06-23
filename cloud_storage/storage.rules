@@ -1,0 +1,33 @@
+rules_version = '2';
+
+function isAdmin() {
+  // Check if the custom claim 'admin' is true
+  return request.auth != null && request.auth.token.admin == true;
+}
+
+function isSelf(userId) {
+ return request.auth != null && request.auth.uid == userId;
+}
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    match /samples/public/{allPaths=**} {
+      allow read: if true;
+      allow create: if isAdmin()
+      		&& request.resource.contentType.matches('audio/wav');
+      allow update: if false;
+    }
+
+    match /samples/{userId}/{allPaths=**} {
+      allow read: if isSelf(userId);
+      allow create: if isAdmin() && isSelf(userId)
+      		&& request.resource.contentType.matches('audio/wav');
+      allow update: if false;
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
