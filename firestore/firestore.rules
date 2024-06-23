@@ -1,0 +1,26 @@
+rules_version = '2';
+
+function isAdmin() {
+  // Check if the custom claim 'admin' is true
+  return request.auth != null && request.auth.token.admin == true;
+}
+
+function isOwner() {
+  return (request.auth != null && resource.data.owner == request.auth.uid);
+}
+
+function isSelf() {
+ return request.auth != null && request.resource.data.owner == request.auth.uid;
+}
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+
+    // Allow only authenticated content owners access
+    match /samples/{documents=**} {
+      allow read: if (resource.data.owner == null) || isOwner();
+      allow write: if isAdmin();
+    }
+  }
+}
