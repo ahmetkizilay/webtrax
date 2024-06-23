@@ -23,6 +23,8 @@ jobs:
         run: |
           npm ci
           npm install firebase-tools
+      - name: Run unit tests
+        run: npm run test:ci
       - name: Run e2e tests
         run: npm run e2e
       - name: Build
