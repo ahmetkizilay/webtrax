@@ -28,7 +28,7 @@ Configure CORS for the cloud storage buckets to be able to download them from th
 https://firebase.google.com/docs/storage/web/download-files#cors_configuration
 
 ```
-gsutil cors set cloud_storage_cors.json gs://webtrax-1fc7d.appspot.com
+gsutil cors set firebase_admin/cloud_storage/cloud_storage_cors.json gs://webtrax-1fc7d.appspot.com
 ```
 
 ## Material Symbols
