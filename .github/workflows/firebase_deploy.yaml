@@ -1,7 +1,7 @@
-name: CI
-run-name: ${{ github.actor }} triggered pull request
+name: Firebase Deploy
+run-name: ${{ github.actor }} triggered Firebase deploy.
 on:
-  pull_request:
+  push:
     branches:
       - 'main'
 jobs:
@@ -17,19 +17,20 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/iron'
-          cache: 'npm'
-          cache-dependency-path: package-lock.json
+      - name: Load Google Application Credentials
+        run: |
+          echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}' > /tmp/credentials.json
       - name: Install and build dependencies
         run: |
           npm ci
           npm install firebase-tools
-      - name: Run unit tests
-        run: npm run test:ci
-      - name: Run Firebase security rules tests
+      - name: Deploy Firebase Security Rules
         run: |
           npm run test:firestore:rules
           npm run test:storage:rules
-      - name: Run e2e tests
-        run: npm run e2e
-      - name: Build
-        run: npm run build -- --configuration=production
+          npm run deploy:firebase:rules
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/credentials.json
+      - name: Remove Google Application Credentials
+        run: rm /tmp/credentials.json
+

@@ -8,9 +8,10 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:ci": "ng test --configuration=ci",
-    "test:firestore-rules": "firebase emulators:exec --only firestore \"jest --forceExit firebase_admin/firestore/rules.spec.ts\"",
-    "test:storage-rules": "firebase emulators:exec --only storage \"jest --forceExit firebase_admin/cloud_storage/rules.spec.ts\"",
-    "e2e": "firebase emulators:exec --only=auth \"ng e2e\" --import=\"./e2e/emulator-data/\""
+    "test:firestore:rules": "firebase emulators:exec --only firestore \"jest --forceExit firebase_admin/firestore/rules.spec.ts\"",
+    "test:storage:rules": "firebase emulators:exec --only storage \"jest --forceExit firebase_admin/cloud_storage/rules.spec.ts\"",
+    "e2e": "firebase emulators:exec --only=auth \"ng e2e\" --import=\"./e2e/emulator-data/\"",
+    "deploy:firebase:rules": "firebase deploy --only firestore:rules,storage:rules"
   },
   "private": true,
   "dependencies": {
