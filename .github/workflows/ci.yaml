@@ -34,6 +34,7 @@ jobs:
       - name: Run e2e tests
         run: npm run e2e
       - name: Clean up changes to index.html
+        if: ${{ !cancelled() }}
         run: git checkout src/index.html
       - name: Build
         run: npm run build -- --configuration=production
