@@ -8,6 +8,7 @@ export const environment = {
       authDomain: 'webtrax-1fc7d.firebaseapp.com',
       messagingSenderId: '199740723361',
       measurementId: 'G-7R4WJNLCLZ',
+      recaptchaSiteKey: "6LcXX_8pAAAAAIUu1OITdt8oHKprPsS1LKZKI7Af"
     },
     emulators: {
       auth: false,

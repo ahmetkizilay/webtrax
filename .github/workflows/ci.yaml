@@ -23,6 +23,8 @@ jobs:
         run: |
           npm ci
           npm install firebase-tools
+      - name: Set up App Check CI
+        run: sed -i 's/<!-- __APP_CHECK__ -->/<script>FIREBASE_APPCHECK_DEBUG_TOKEN="${{ secrets.FIREBASE_APP_CHECK_CI_TOKEN }}"<\/script>/g' src/index.html
       - name: Run unit tests
         run: npm run test:ci
       - name: Run Firebase security rules tests
