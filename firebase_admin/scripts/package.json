@@ -4,7 +4,8 @@
   "main": "lib/make_admin.js",
   "scripts": {
     "build": "tsc",
-    "test": "tsc && jest --forceExit"
+    "test": "tsc && jest --forceExit",
+    "bootstrap:emulator": "node lib/emulator_bootstrap.js"
   },
   "author": "",
   "license": "ISC",
