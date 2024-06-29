@@ -77,8 +77,8 @@ process.env['FIREBASE_AUTH_EMULATOR_HOST'] = 'localhost:9099';
 process.env['FIREBASE_STORAGE_EMULATOR_HOST'] = 'localhost:9199';
 
 const PROJECT_ID = 'webtrax-1fc7d';
-const SAMPLES_DIR = '../../../data/samples';
-const INPUT_FILE = '../../../data/bootstrap.txt';
+const SAMPLES_DIR = '../../data/samples';
+const INPUT_FILE = '../../data/bootstrap.txt';
 
 // Bootstrap the Firebase project with users, Firestore data, and Storage files.
 (async () => {
