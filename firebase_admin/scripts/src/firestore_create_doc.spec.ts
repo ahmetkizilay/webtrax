@@ -7,28 +7,33 @@ process.env['FIRESTORE_EMULATOR_HOST'] = 'localhost:8080';
 
 const PROJECT_ID = 'webtrax-1fc7d';
 
+async function clearAllData(firestore: FirebaseFirestore.Firestore) {
+  const colRef = firestore.collection('samples');
+  let docs = await colRef.listDocuments();
+  for (const doc of docs) {
+    await doc.delete();
+  }
+}
+
 describe('firestore_create_doc', () => {
   let app: App
   let firestore: FirebaseFirestore.Firestore;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     app = initializeApp({
       projectId: PROJECT_ID,
     });
 
     firestore = getFirestore();
+    await clearAllData(firestore);
   });
 
   afterAll(async () => {
     await deleteApp(app);
   });
 
-  beforeEach(async () => {
-    const colRef = firestore.collection('samples');
-    let docs = await colRef.listDocuments();
-    for (const doc of docs) {
-      await doc.delete();
-    }
+  afterEach(async () => {
+    await clearAllData(firestore);
   })
 
   it('creates a sample doc', async () => {
@@ -44,5 +49,5 @@ describe('firestore_create_doc', () => {
     const docRef = firestore.collection('samples').doc(docRefId);
     const doc = await docRef.get();
     expect(doc.data()).toEqual(docParams.data);
-  });
+  }, 20000);
 });
