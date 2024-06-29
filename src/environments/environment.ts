@@ -12,7 +12,8 @@ export const environment = {
     },
     emulators: {
       auth: false,
-      firestore: false
+      firestore: false,
+      storage: false
     }
   }
 };

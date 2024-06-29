@@ -6,7 +6,7 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { getApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth, connectAuthEmulator } from '@angular/fire/auth';
 import { provideFirestore, getFirestore, connectFirestoreEmulator } from '@angular/fire/firestore';
-import { provideStorage, getStorage } from '@angular/fire/storage';
+import { provideStorage, getStorage, connectStorageEmulator } from '@angular/fire/storage';
 import { ReCaptchaEnterpriseProvider, initializeAppCheck, provideAppCheck } from '@angular/fire/app-check';
 
 import { environment } from '../environments/environment';
@@ -31,7 +31,13 @@ export const appConfig: ApplicationConfig = {
             }
             return firestore
         }),
-        provideStorage(() => getStorage()),
+        provideStorage(() => {
+          const storage = getStorage();
+          if (environment.firebase.emulators.storage) {
+            connectStorageEmulator(storage, 'localhost', 9199);
+          }
+          return storage;
+        }),
         provideAppCheck(() => initializeAppCheck(getApp(), {
           provider: new ReCaptchaEnterpriseProvider(
             environment.firebase.config.recaptchaSiteKey

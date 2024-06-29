@@ -12,7 +12,8 @@ export const environment = {
     },
     emulators: {
       auth: true,
-      firestore: true
+      firestore: true,
+      storage: true
     }
   }
 };
