@@ -1,15 +1,15 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  Sample,
   SampleLibraryService,
   SampleLibraryStatus,
 } from '../sample-library.service';
-import { BehaviorSubject, Subscription, filter, first, fromEvent } from 'rxjs';
+import { Subscription, filter, first, fromEvent } from 'rxjs';
 import { SampleListComponent } from '../sample_list/sample_list.component';
 import { TransportComponent } from '../transport/transport.component';
 import { TrackComponent } from '../track/track.component';
 import { TrackDetailComponent } from '../track_detail/track_detail.component';
+import { SceneManager, Track } from '../scene.service';
 
 @Component({
   selector: 'app-home',
@@ -35,10 +35,9 @@ import { TrackDetailComponent } from '../track_detail/track_detail.component';
       <div style="width: 100%">
         <div>
           <app-transport></app-transport>
-          <button *ngIf="false" (click)="addNewTrack('kick')">New Track</button>
           <app-track
             *ngFor="let track of tracks"
-            [trackName]="track.name"
+            [track]="track"
             (trackSelect)="onTrackSelected($event)"
           ></app-track>
         </div>
@@ -61,7 +60,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   audioStateSubscription$: Subscription;
 
-  tracks: Sample[] = [];
+  tracks: Track[] = [];
 
   isAudioEnabled = false;
   selectedTrack: string | null = null;
@@ -98,12 +97,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.audioContext.resume();
   }
 
-  addNewTrack(sampleName: string) {
-    let sample = this.sampleLibraryService.getSample(sampleName);
+  addNewTrack(track: Track) {
+    let sample = this.sampleLibraryService.getSample(track.params.sampleId);
     if (sample) {
-      this.tracks.push(sample);
+      this.tracks.push(track);
     } else {
-      console.error(`No sample found for ${sampleName}`);
+      console.error(`No sample found for ${track.params.sampleId}`);
     }
   }
 
@@ -116,17 +115,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private loadNewTemplate() {
-    const initialTracks = [
-      'kick',
-      'snare',
-      'tom',
-      'clap',
-      'cowbell',
-      'closed_hat',
-      'open_hat',
-      'cymbal',
-    ];
-    initialTracks.forEach((name) => this.addNewTrack(name));
+    const defaultScene = SceneManager.createDefaultScene();
+    defaultScene.tracks.forEach((track: Track) => {
+      this.addNewTrack(track);
+    });
   }
 
   private getAudioEnabled(): boolean {

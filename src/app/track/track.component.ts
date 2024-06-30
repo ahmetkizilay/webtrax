@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AudioService  } from '../audio.service';
 import { distinctUntilChanged, map } from 'rxjs';
 import { TransportService, TransportStatus } from '../transport/transport.service';
+import { Track } from '../scene.service';
 
 export interface TrackCell {
   active: boolean;
@@ -15,7 +16,7 @@ export interface TrackCell {
   template: `
 <div class="track">
   <div class="track-header" (click)="onTrackSelected()">
-    <label class="track-name">{{trackName}}</label>
+    <label class="track-name">{{track.name}}</label>
   </div>
   <div *ngFor="let cell of cells; let i = index"
       class="track-step"
@@ -28,7 +29,6 @@ export interface TrackCell {
   styleUrls: ['./track.component.css']
 })
 export class TrackComponent implements OnInit, OnDestroy {
-  readonly num_steps = 16;
   cells: TrackCell[] = [];
   activeCell = -1;
 
@@ -40,37 +40,40 @@ export class TrackComponent implements OnInit, OnDestroy {
     distinctUntilChanged()
   ).subscribe(this.resetActiveStep.bind(this));
 
-  @Input({ required: true }) trackName!: string;
+  @Input({ required: true }) track!: Track;
   @Output() trackSelect = new EventEmitter<string>();
 
-  constructor() {
-    for (let i = 0; i < this.num_steps; i++) {
-      this.cells.push({ active: false });
-    }
-  }
 
   ngOnInit(): void {
-    this.audioService.registerTrack(this.trackName);
+    const stepLength = this.track.steps.length;
+    this.cells = new Array(stepLength);
+    for (let i = 0; i < stepLength; i++) {
+      this.cells[i]  = {
+        active: this.track.steps[i].active,
+      };
+    }
+    this.audioService.registerTrack(this.track.name);
   }
 
   ngOnDestroy(): void {
-    this.audioService.unregisterTrack(this.trackName);
+    this.audioService.unregisterTrack(this.track.name);
     this.beatSubscription$.unsubscribe();
     this.transportStopped$.unsubscribe();
   }
 
   onStepClicked(e: Event, i: number) {
     this.cells[i].active = !this.cells[i].active;
+    this.track.steps[i].active = this.cells[i].active;
   }
 
   onTrackSelected() {
-    this.trackSelect.emit(this.trackName);
+    this.trackSelect.emit(this.track.name);
   }
 
   private selectNextCell(when: number) {
-    this.activeCell = (this.activeCell + 1) % this.num_steps;
+    this.activeCell = (this.activeCell + 1) % this.cells.length;
     if (this.cells[this.activeCell]?.active) {
-      this.audioService.playSample(this.trackName, when);
+      this.audioService.playSample(this.track.name, when);
     }
   }
 
