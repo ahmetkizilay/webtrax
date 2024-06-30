@@ -53,28 +53,34 @@ export class SceneComponent implements OnInit {
         filter((state) => state === SampleLibraryStatus.INITIALIZED),
         first()
       )
-      .subscribe(() => {
-        this.loadDefaultTemplate();
+      .subscribe(async () => {
+        await this.loadDefaultTemplate();
       });
   }
 
   addNewTrack(track: Track) {
-    let sample = this.sampleLibraryService.getSample(track.params.sampleId);
-    if (sample) {
-      this.tracks.push(track);
-    } else {
-      console.error(`No sample found for ${track.params.sampleId}`);
-    }
+    this.tracks.push(track);
   }
 
   onTrackSelected(selectedTrack: string) {
     this.selectedTrack = selectedTrack;
   }
 
-  private loadDefaultTemplate() {
+  private async loadDefaultTemplate() {
     const defaultScene = SceneManager.createDefaultScene();
+
     defaultScene.tracks.forEach((track: Track) => {
       this.addNewTrack(track);
     });
+
+    // Download the samples for the scene.
+    // TODO: Handle errors.
+    const downloads = defaultScene.tracks.map((track: Track) => {
+      return this.sampleLibraryService.downloadSample({
+        name: track.name,
+        path: track.params.sampleId,
+      });
+    });
+    await Promise.all(downloads);
   }
 }

@@ -14,6 +14,7 @@ describe('SceneComponent', () => {
   // Used by SampleLibraryService
   let mockStatusChange: ReplaySubject<SampleLibraryStatus>;
   let mockGetSampleFn: jasmine.Spy;
+  let mockDownloadSampleFn: jasmine.Spy;
 
   // Used by Mocked TransportService
   let mockOnBeat;
@@ -25,6 +26,7 @@ describe('SceneComponent', () => {
   beforeEach(() => {
     mockStatusChange = new ReplaySubject<SampleLibraryStatus>();
     mockGetSampleFn = jasmine.createSpy();
+    mockDownloadSampleFn = jasmine.createSpy();
 
     mockOnBeat = new Subject();
     mockTransportState = new Subject();
@@ -39,6 +41,7 @@ describe('SceneComponent', () => {
         {provide: SampleLibraryService, useValue: {
           onStatusChange$: mockStatusChange,
           getSample: mockGetSampleFn,
+          downloadSample: mockDownloadSampleFn,
         }},
         {provide: TransportService, useValue: {
           onBeat: mockOnBeat,
@@ -59,10 +62,12 @@ describe('SceneComponent', () => {
 
   it('loads default template', () => {
     mockGetSampleFn.and.returnValue(true);
+    mockDownloadSampleFn.and.returnValue(Promise.resolve(true));
     mockStatusChange.next(SampleLibraryStatus.INITIALIZED);
     fixture.detectChanges();
 
     expect(component.tracks.length).toBeGreaterThan(0);
-    expect(fixture.debugElement.queryAll(By.css('app-track')).length).toBeGreaterThan(0);
+    expect(fixture.debugElement.queryAll(By.css('app-track')).length).toBe(8);
+    expect(mockDownloadSampleFn).toHaveBeenCalledTimes(8);
   });
 });

@@ -38,13 +38,13 @@ describe('TrackComponent', () => {
   });
 
   it('creates component', () => {
-    component.track = TrackManager.createEmptyTrack('test', 16);
+    component.track = TrackManager.createEmptyTrack('test', 'test.wav', 16);
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
   it('creates steps ui', () => {
-    component.track = TrackManager.createEmptyTrack('test', 4);
+    component.track = TrackManager.createEmptyTrack('test', 'test.wav', 4);
     fixture.detectChanges();
     expect(component.cells.length).toBe(4);
     expect(fixture.nativeElement.querySelectorAll('.track-step').length).toBe(4);
@@ -52,7 +52,7 @@ describe('TrackComponent', () => {
 
   it('creates steps ui with active/passive rendering', () => {
 
-    const track  = TrackManager.createTrackWithSteps('test', [true, false, true, false]);
+    const track  = TrackManager.createTrackWithSteps('test', 'test.wav', [true, false, true, false]);
 
     component.track = track;
     fixture.detectChanges();
@@ -60,7 +60,7 @@ describe('TrackComponent', () => {
   });
 
   it('updates the track step on click', () => {
-    const track  = TrackManager.createTrackWithSteps('test', [true, false, true, false]);
+    const track  = TrackManager.createTrackWithSteps('test', 'test.wav', [true, false, true, false]);
 
     component.track = track;
     fixture.detectChanges();

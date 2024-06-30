@@ -45,44 +45,50 @@ export class SceneManager {
       bpm: DEFAULT_BPM,
       stepCount: DEFAULT_STEP_COUNT,
       tracks: [
-        TrackManager.createTrackWithSteps('kick', [
+        TrackManager.createTrackWithSteps('kick',
+          'public/kick.wav', [
           true, false, false, false,
           true, false, false, false,
           true, false, false, false,
           true, false, false, false,
         ]),
-        TrackManager.createTrackWithSteps('snare', [
+        TrackManager.createTrackWithSteps('snare',
+          'public/snare.wav', [
           false, false, true, false,
           false, false, true, false,
           false, false, true, false,
           false, false, true, false,
         ]),
-        TrackManager.createTrackWithSteps('tom', [
+        TrackManager.createTrackWithSteps('tom',
+          'public/tom.wav', [
           false, false, false, false,
           false, false, false, false,
           false, false, false, false,
           false, false, false, true,
         ]),
-        TrackManager.createTrackWithSteps('clap', [
+        TrackManager.createTrackWithSteps('clap',
+          'public/clap.wav', [
           false, false, false, false,
           true, false, false, false,
           false, false, false, false,
           true, false, false, false,
         ]),
-        TrackManager.createTrackWithSteps('cowbell', [
+        TrackManager.createTrackWithSteps('cowbell',
+          'public/cowbell.wav', [
           false, false, false, false,
           false, false, false, true,
           false, false, false, false,
           false, false, false, false,
         ]),
-        TrackManager.createTrackWithSteps('closed_hat', [
+        TrackManager.createTrackWithSteps('closed_hat',
+          'public/closed_hat.wav', [
           true, false, true, false,
           true, false, true, false,
           true, false, true, false,
           true, false, true, false,
         ]),
-        TrackManager.createEmptyTrack('open_hat', DEFAULT_STEP_COUNT),
-        TrackManager.createEmptyTrack('cymbal', DEFAULT_STEP_COUNT),
+        TrackManager.createEmptyTrack('open_hat', 'public/open_hat.wav', DEFAULT_STEP_COUNT),
+        TrackManager.createEmptyTrack('cymbal', 'public/cymbal.wav', DEFAULT_STEP_COUNT),
       ],
     };
   }
@@ -99,23 +105,23 @@ export class SceneManager {
 }
 
 export class TrackManager {
-  static createEmptyTrack(name: string, stepCount: number): Track {
+  static createEmptyTrack(name: string, sampleId: string, stepCount: number): Track {
     return {
       name,
       type: TrackType.SAMPLE,
       params: {
-        sampleId: name,
+        sampleId,
       },
       steps: Array.from({ length: stepCount }, () => ({ active: false })),
     };
   }
 
-  static createTrackWithSteps(name: string, steps: boolean[]): Track {
+  static createTrackWithSteps(name: string, sampleId: string, steps: boolean[]): Track {
     return {
       name,
       type: TrackType.SAMPLE,
       params: {
-        sampleId: name,
+        sampleId,
       },
       steps: steps.map((active) => ({ active })),
     };
