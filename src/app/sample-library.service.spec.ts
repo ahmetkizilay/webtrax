@@ -1,16 +1,57 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SampleLibraryService } from './sample-library.service';
+import { Sample, SampleLibraryService } from './sample-library.service';
+import { FirebaseApp, getApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { Storage, connectStorageEmulator, getStorage, provideStorage, ref, uploadBytes } from '@angular/fire/storage';
 
-xdescribe('SampleLibraryService', () => {
-  let service: SampleLibraryService;
+describe('SampleLibraryService', () => {
+  const projectId = 'webtrax-1fc7d';
+  let appName: string;
+  let app: FirebaseApp;
+  let storage: Storage;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(SampleLibraryService);
+    appName = `sampleLibrary-${Date.now()}`;
+    TestBed.configureTestingModule({
+      providers: [
+        provideFirebaseApp(() => initializeApp({
+          projectId,
+          storageBucket: `${projectId}.appspot.com`,
+        }, appName)),
+        provideStorage(() => {
+          let storage = getStorage(getApp(appName));
+          connectStorageEmulator(storage, 'localhost', 9199);
+          return storage;
+        }),
+        { provide: AudioContext, useValue: new AudioContext()},
+      ],
+    });
+    app = TestBed.inject(FirebaseApp);
+    storage = TestBed.inject(Storage);
   });
 
-  it('should be created', () => {
+  it('creates SampleLibrary Service instance', () => {
+    const service = TestBed.inject(SampleLibraryService);
     expect(service).toBeTruthy();
+  });
+
+  it('downloads sample', async () => {
+    const service = TestBed.inject(SampleLibraryService);
+    // This sample is imported into the Firebase emulator.
+    const sample: Sample = {
+      name: 'test',
+      path: 'public/test.wav',
+    };
+    await service.downloadSample(sample);
+    expect(service.samples.length).toBe(1);
+
+    const receivedSample = service.getSample('test')!;
+    expect(receivedSample.name).toEqual('test');
+    expect(receivedSample.path).toEqual('public/test.wav');
+
+    const buffer = service.getSampleBuffer('test')!;
+    expect(buffer.sampleRate).toBe(44100);
+    expect(buffer.numberOfChannels).toBe(2);
+    expect(buffer.duration).toBeCloseTo(0.6, 0.1);
   });
 });

@@ -1,0 +1,19 @@
+{
+  "name": "samples/public/test.wav",
+  "bucket": "webtrax-1fc7d.appspot.com",
+  "metageneration": 1,
+  "generation": 1719789114418,
+  "contentType": "audio/wav",
+  "storageClass": "STANDARD",
+  "contentDisposition": "inline",
+  "downloadTokens": [
+    "d86296f9-f8d7-4a3e-a420-fa01879e8708"
+  ],
+  "etag": "XrKi5eFrvydJL+q25MQTvLJ60/U",
+  "customMetadata": {},
+  "timeCreated": "2024-06-30T23:11:54.418Z",
+  "updated": "2024-06-30T23:11:54.418Z",
+  "size": 159788,
+  "md5Hash": "yoTWm2ptV/IZbWFN5rRoYA==",
+  "crc32c": "3152119614"
+}
