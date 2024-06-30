@@ -2,19 +2,21 @@ import { Track, TrackManager, SceneManager } from './scene.service';
 
 describe('TrackManager', () => {
   describe('emptyTrack', () => {
-    it('creates a track with the correct name and step count', () => {
-      const track: Track = TrackManager.createEmptyTrack('test', 16);
+    it('creates a track with provided params', () => {
+      const track: Track = TrackManager.createEmptyTrack('test', 'test.wav', 16);
       expect(track.name).toBe('test');
+      expect(track.params.sampleId).toBe('test.wav');
       expect(track.steps.length).toBe(16);
       expect(track.steps.every(step => !step.active)).toBeTrue();
     });
   });
 
   describe('createTrackWithSteps', () => {
-    it('creates a track with the correct name and steps', () => {
+    it('creates a track with the given params', () => {
       const steps = [true, false, true, false];
-      const track: Track = TrackManager.createTrackWithSteps('test', steps);
+      const track: Track = TrackManager.createTrackWithSteps('test', 'test.wav', steps);
       expect(track.name).toBe('test');
+      expect(track.params.sampleId).toBe('test.wav');
       expect(track.steps.length).toBe(4);
       expect(track.steps.map(step => step.active)).toEqual(steps);
     });
@@ -22,7 +24,7 @@ describe('TrackManager', () => {
 
   describe('fromTrack', () => {
     it('creates a TrackManager from a track', () => {
-      const track: Track = TrackManager.createEmptyTrack('test', 16);
+      const track: Track = TrackManager.createEmptyTrack('test', 'test.wav', 16);
       const manager: TrackManager = TrackManager.fromTrack(track);
       expect(manager).toBeDefined();
     });
@@ -65,7 +67,7 @@ describe('SceneManager', () => {
   describe('addTrack', () => {
     it('adds a track to the scene', () => {
       const scene = SceneManager.createEmptyScene('test', 120, 16);
-      const track = TrackManager.createEmptyTrack('test', 16);
+      const track = TrackManager.createEmptyTrack('test', 'test.wav', 16);
       const manager = SceneManager.fromScene(scene);
       manager.addTrack(track);
       expect(scene.tracks).toEqual([track]);
