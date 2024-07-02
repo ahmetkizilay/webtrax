@@ -12,7 +12,8 @@
     "test:storage:rules": "firebase emulators:exec --only storage \"jest --forceExit firebase_admin/cloud_storage/rules.spec.ts\"",
     "e2e": "firebase emulators:exec --only=auth \"ng e2e\" --import=\"./e2e/emulator-data/\"",
     "deploy:firebase:rules": "firebase deploy --only firestore:rules,storage",
-    "dev:bootstrap": "npm --prefix firebase_admin/scripts run build && npm --prefix firebase_admin/scripts run bootstrap:emulator"
+    "dev:bootstrap": "npm --prefix firebase_admin/scripts run build && npm --prefix firebase_admin/scripts run bootstrap:emulator",
+    "dev:startemu": "firebase emulators:exec \"npm run dev:bootstrap && npm start\" --import=\"./src/test_data/emulator-data/\""
   },
   "private": true,
   "dependencies": {
