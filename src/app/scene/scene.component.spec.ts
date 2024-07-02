@@ -34,7 +34,6 @@ describe('SceneComponent', () => {
     mockAudioService = jasmine.createSpyObj('AudioService', [
       'registerTrack',
       'unregisterTrack',
-      'getTrackParams',
     ]);
 
     TestBed.configureTestingModule({
