@@ -38,10 +38,10 @@ describe('SceneManager', () => {
       expect(scene.name).toBe('Scene 1');
       expect(scene.bpm).toBe(128);
       expect(scene.stepCount).toBe(16);
-      expect(scene.tracks.length).toBe(8);
+      expect(scene.tracks.length).toBe(6);
       expect(scene.tracks.map(track => track.name)).toEqual([
         'kick', 'snare', 'tom', 'clap',
-        'cowbell', 'closed_hat', 'open_hat', 'cymbal',
+        'cowbell', 'closed_hat',
       ]);
     });
   });

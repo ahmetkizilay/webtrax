@@ -68,8 +68,8 @@ describe('SceneComponent', () => {
     fixture.detectChanges();
 
     expect(component.tracks.length).toBeGreaterThan(0);
-    expect(fixture.debugElement.queryAll(By.css('app-track')).length).toBe(8);
-    expect(mockDownloadSampleFn).toHaveBeenCalledTimes(8);
+    expect(fixture.debugElement.queryAll(By.css('app-track')).length).toBe(6);
+    expect(mockDownloadSampleFn).toHaveBeenCalledTimes(6);
   });
 
   it('should create app-track-detail when a track is selected', async () => {

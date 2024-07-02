@@ -87,8 +87,6 @@ export class SceneManager {
           true, false, true, false,
           true, false, true, false,
         ]),
-        TrackManager.createEmptyTrack('open_hat', 'public/open_hat.wav', DEFAULT_STEP_COUNT),
-        TrackManager.createEmptyTrack('cymbal', 'public/cymbal.wav', DEFAULT_STEP_COUNT),
       ],
     };
   }
