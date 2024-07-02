@@ -106,24 +106,4 @@ export class AudioService {
     this.tracks.delete(name);
   }
 
-  getTrackParams(name: string) {
-    let trackNode = this.tracks.get(name);
-    if (!trackNode) {
-      console.error(`${name} is not a known track`);
-      return;
-    }
-
-    return trackNode.params;
-  }
-
-  setTrackParams(name: string, params: TrackParams) {
-    let trackNode = this.tracks.get(name);
-    if (!trackNode) {
-      console.error(`${name} is not a known track`);
-      return;
-    }
-
-    trackNode.params = params;
-  }
-
 }
