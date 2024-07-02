@@ -4,7 +4,7 @@ enum TrackType {
   SAMPLE,
 }
 
-interface SampleTrackParams {
+export interface SampleTrackParams {
   sampleId: string;
   gain?: number;
   pan?: number;

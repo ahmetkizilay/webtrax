@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TrackDetailComponent } from './track_detail.component';
-import { AudioService } from '../audio.service';
 import { TrackManager } from '../scene.service';
 import { By } from '@angular/platform-browser';
 
@@ -9,20 +8,8 @@ describe('TrackDetailComponent', () => {
   let component: TrackDetailComponent;
   let fixture: ComponentFixture<TrackDetailComponent>;
 
-  let mockGetTrackParams: jasmine.Spy;
-  let mockSetTrackParams: jasmine.Spy;
-
   beforeEach(() => {
-    mockGetTrackParams = jasmine.createSpy();
-    mockSetTrackParams = jasmine.createSpy();
-
     TestBed.configureTestingModule({
-      providers: [{
-        provide: AudioService, useValue: {
-          getTrackParams: mockGetTrackParams,
-          setTrackParams: mockSetTrackParams,
-        }
-      }],
       imports: [TrackDetailComponent]
     });
     fixture = TestBed.createComponent(TrackDetailComponent);
@@ -45,7 +32,6 @@ describe('TrackDetailComponent', () => {
 
   it ('renders sample name', () => {
     const track = TrackManager.createEmptyTrack('my track', 'test.wav', 4);
-    mockGetTrackParams.and.returnValue(track.params);
 
     component.track = track;
     fixture.detectChanges();
@@ -56,7 +42,6 @@ describe('TrackDetailComponent', () => {
 
   it ('handles gain change', () => {
     const track = TrackManager.createEmptyTrack('my track', 'test.wav', 4);
-    mockGetTrackParams.and.returnValue(track.params);
 
     component.track = track;
     fixture.detectChanges();
@@ -66,12 +51,11 @@ describe('TrackDetailComponent', () => {
 
     fixture.detectChanges();
     expect(component.trackParams.gain).toEqual(0.5);
-    expect(mockSetTrackParams).toHaveBeenCalledWith('my track', component.trackParams);
+    expect(track.params.gain).toEqual(0.5);
   });
 
   it ('handles pan change', () => {
     const track = TrackManager.createEmptyTrack('my track', 'test.wav', 4);
-    mockGetTrackParams.and.returnValue(track.params);
     component.track = track;
     fixture.detectChanges();
 
@@ -80,24 +64,21 @@ describe('TrackDetailComponent', () => {
 
     fixture.detectChanges();
     expect(component.trackParams.pan).toBe(0);
-    expect(mockSetTrackParams).toHaveBeenCalledWith('my track', component.trackParams);
+    expect(track.params.pan).toBe(0);
 
-    mockSetTrackParams.calls.reset();
     input.triggerEventHandler('input', { target: { valueAsNumber: 0 } });
     fixture.detectChanges();
     expect(component.trackParams.pan).toEqual(-1);
-    expect(mockSetTrackParams).toHaveBeenCalledWith('my track', component.trackParams);
+    expect(track.params.pan).toEqual(-1);
 
-    mockSetTrackParams.calls.reset();
     input.triggerEventHandler('input', { target: { valueAsNumber: 100 } });
     fixture.detectChanges();
     expect(component.trackParams.pan).toEqual(1);
-    expect(mockSetTrackParams).toHaveBeenCalledWith('my track', component.trackParams);
+    expect(track.params.pan).toEqual(1);
   });
 
   it('handles delay send change', () => {
     const track = TrackManager.createEmptyTrack('my track', 'test.wav', 4);
-    mockGetTrackParams.and.returnValue(track.params);
     component.track = track;
     fixture.detectChanges();
 
@@ -106,6 +87,5 @@ describe('TrackDetailComponent', () => {
 
     fixture.detectChanges();
     expect(component.trackParams.delaySend).toEqual(0.5);
-    expect(mockSetTrackParams).toHaveBeenCalledWith('my track', component.trackParams);
   });
 });
