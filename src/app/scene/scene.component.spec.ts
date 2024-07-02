@@ -34,6 +34,7 @@ describe('SceneComponent', () => {
     mockAudioService = jasmine.createSpyObj('AudioService', [
       'registerTrack',
       'unregisterTrack',
+      'getTrackParams',
     ]);
 
     TestBed.configureTestingModule({
@@ -69,5 +70,32 @@ describe('SceneComponent', () => {
     expect(component.tracks.length).toBeGreaterThan(0);
     expect(fixture.debugElement.queryAll(By.css('app-track')).length).toBe(8);
     expect(mockDownloadSampleFn).toHaveBeenCalledTimes(8);
+  });
+
+  it('should create app-track-detail when a track is selected', async () => {
+    // Load the default template
+    mockGetSampleFn.and.returnValue(true);
+    mockDownloadSampleFn.and.returnValue(Promise.resolve(true));
+    mockStatusChange.next(SampleLibraryStatus.INITIALIZED);
+    fixture.detectChanges();
+
+    // Step 1: Trigger the selection of a track
+    // Assuming there's at least one track to select and using the first one for this test
+    const firstTrack = component.tracks[0];
+    component.onTrackSelected(firstTrack.name);
+    fixture.detectChanges();
+
+    // Step 2: Check for the creation of app-track-detail
+    const trackDetail = fixture.debugElement.query(By.css('app-track-detail'));
+    expect(trackDetail).not.toBeNull();
+    expect(trackDetail.componentInstance.track).toEqual(firstTrack);
+
+    // Select another track
+    const secondTrack = component.tracks[1];
+    component.onTrackSelected(secondTrack.name);
+    fixture.detectChanges();
+
+    // Check if the track detail is updated
+    expect(trackDetail.componentInstance.track).toEqual(secondTrack);
   });
 });

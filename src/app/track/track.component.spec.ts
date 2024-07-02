@@ -79,4 +79,20 @@ describe('TrackComponent', () => {
     expect(step.classes['engaged']).toBe(true);
 
   });
+
+  it('should emit trackSelect event when track header is clicked', () => {
+  component.track = TrackManager.createEmptyTrack('test-track', 'test.wav', 4);
+  // Step 1: Spy on the event emitter
+  spyOn(component.trackSelect, 'emit');
+
+  // Assuming 'trackHeader' is the template reference variable for the track header element
+  const trackHeader = fixture.debugElement.query(By.css('.track-header'));
+
+  // Step 2: Simulate the click event on the track header
+  trackHeader.triggerEventHandler('click', null);
+  fixture.detectChanges();
+
+  // Step 3: Assert that the trackSelect event was emitted
+  expect(component.trackSelect.emit).toHaveBeenCalledOnceWith('test-track');
+});
 });
