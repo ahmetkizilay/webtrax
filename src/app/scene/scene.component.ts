@@ -77,7 +77,7 @@ export class SceneComponent implements OnInit {
     // TODO: Handle errors.
     const downloads = defaultScene.tracks.map((track: Track) => {
       return this.sampleLibraryService.downloadSample({
-        name: track.name,
+        name: track.params.sampleId,
         path: track.params.sampleId,
       });
     });

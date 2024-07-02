@@ -52,7 +52,7 @@ export class TrackComponent implements OnInit, OnDestroy {
         active: this.track.steps[i].active,
       };
     }
-    this.audioService.registerTrack(this.track.name);
+    this.audioService.registerTrack(this.track);
   }
 
   ngOnDestroy(): void {
