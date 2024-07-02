@@ -6,9 +6,18 @@ enum TrackType {
 
 export interface SampleTrackParams {
   sampleId: string;
-  gain?: number;
-  pan?: number;
-  delaySend?: number;
+  gain: number;
+  pan: number;
+  delaySend: number;
+}
+
+function createSampleTrackParams(sampleId: string): SampleTrackParams {
+  return {
+    sampleId,
+    gain: 1,
+    pan: 0,
+    delaySend: 0,
+  };
 }
 
 interface TrackStep {
@@ -107,9 +116,7 @@ export class TrackManager {
     return {
       name,
       type: TrackType.SAMPLE,
-      params: {
-        sampleId,
-      },
+      params: createSampleTrackParams(sampleId),
       steps: Array.from({ length: stepCount }, () => ({ active: false })),
     };
   }
@@ -118,9 +125,7 @@ export class TrackManager {
     return {
       name,
       type: TrackType.SAMPLE,
-      params: {
-        sampleId,
-      },
+      params: createSampleTrackParams(sampleId),
       steps: steps.map((active) => ({ active })),
     };
   }

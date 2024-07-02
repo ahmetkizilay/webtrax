@@ -1,12 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { SampleLibraryService } from './sample-library.service';
+import { Track, SampleTrackParams } from './scene.service';
 
-export interface TrackParams {
-  sampleId: string,
-  gain: number,
-  pan: number,
-  delaySend: number,
-};
+export type TrackParams = SampleTrackParams;
 
 class TrackSignalChain {
   private gain: GainNode;
@@ -68,6 +64,7 @@ export class AudioService {
 
   playSample(trackName: string, when = 0) {
     let track = this.tracks.get(trackName);
+
     if (!track) {
       console.error(`No track with name: ${'trackName'}`);
       return;
@@ -85,20 +82,15 @@ export class AudioService {
     }, { once: true });
   }
 
-  registerTrack(name: string) {
-    console.log(`registered track: ${name}`);
+  registerTrack(track: Track) {
+    console.log(`registered track: ${track.name}`);
 
     let trackNode = {
-      name: name,
+      name: track.name,
       out: new TrackSignalChain(this.audio, this.mainOut, this.delaySend),
-      params: {
-        sampleId: name,
-        gain: 1.0,
-        pan: 0,
-        delaySend: 0,
-      },
+      params: track.params,
     };
-    this.tracks.set(name, trackNode);
+    this.tracks.set(track.name, trackNode);
   }
 
   unregisterTrack(name: string) {
