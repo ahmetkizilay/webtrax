@@ -32,7 +32,7 @@ import { SceneManager, Track } from '../scene.service';
     ></app-track>
   </div>
   <div class="detail-container" *ngIf="selectedTrack">
-    <app-track-detail trackName="{{ selectedTrack }}"></app-track-detail>
+    <app-track-detail [track]="selectedTrack"></app-track-detail>
   </div>
 </div>
   `,
@@ -44,7 +44,7 @@ export class SceneComponent implements OnInit {
 
   tracks: Track[] = [];
 
-  selectedTrack: string | null = null;
+  selectedTrack?: Track;
 
   ngOnInit(): void {
     // One-time subscription to load the template at the beginning.
@@ -63,7 +63,7 @@ export class SceneComponent implements OnInit {
   }
 
   onTrackSelected(selectedTrack: string) {
-    this.selectedTrack = selectedTrack;
+    this.selectedTrack = this.tracks.find((track) => track.name === selectedTrack);
   }
 
   private async loadDefaultTemplate() {
