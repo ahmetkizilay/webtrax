@@ -3,14 +3,30 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TrackDetailComponent } from './track_detail.component';
 import { TrackManager } from '../scene.service';
 import { By } from '@angular/platform-browser';
+import { SampleLibraryService } from '../sample-library.service';
 
 describe('TrackDetailComponent', () => {
   let component: TrackDetailComponent;
   let fixture: ComponentFixture<TrackDetailComponent>;
 
+  let mockGetSampleBufferFn: jasmine.Spy;
+
   beforeEach(() => {
+    mockGetSampleBufferFn = jasmine.createSpy();
+    mockGetSampleBufferFn.and.returnValue(
+      new AudioBuffer({ length: 100, sampleRate: 44100 })
+    );
+
     TestBed.configureTestingModule({
-      imports: [TrackDetailComponent]
+      providers: [
+        {
+          provide: SampleLibraryService,
+          useValue: {
+            getSampleBuffer: mockGetSampleBufferFn,
+          },
+        },
+      ],
+      imports: [TrackDetailComponent],
     });
     fixture = TestBed.createComponent(TrackDetailComponent);
     component = fixture.componentInstance;
@@ -30,23 +46,27 @@ describe('TrackDetailComponent', () => {
     expect(label.nativeElement.textContent).toEqual('my track');
   });
 
-  it ('renders sample name', () => {
+  it('renders sample name', () => {
     const track = TrackManager.createEmptyTrack('my track', 'test.wav', 4);
 
     component.track = track;
     fixture.detectChanges();
 
-    const sampleLabel = fixture.debugElement.query(By.css('.param-block .sample-name'));
+    const sampleLabel = fixture.debugElement.query(
+      By.css('.param-block .sample-name')
+    );
     expect(sampleLabel.nativeElement.textContent).toEqual('test.wav');
   });
 
-  it ('handles gain change', () => {
+  it('handles gain change', () => {
     const track = TrackManager.createEmptyTrack('my track', 'test.wav', 4);
 
     component.track = track;
     fixture.detectChanges();
 
-    const input = fixture.debugElement.query(By.css('.param-block input[data-param=gain]'));
+    const input = fixture.debugElement.query(
+      By.css('.param-block input[data-param=gain]')
+    );
     input.triggerEventHandler('input', { target: { valueAsNumber: 50 } });
 
     fixture.detectChanges();
@@ -54,12 +74,14 @@ describe('TrackDetailComponent', () => {
     expect(track.params.gain).toEqual(0.5);
   });
 
-  it ('handles pan change', () => {
+  it('handles pan change', () => {
     const track = TrackManager.createEmptyTrack('my track', 'test.wav', 4);
     component.track = track;
     fixture.detectChanges();
 
-    const input = fixture.debugElement.query(By.css('.param-block input[data-param=pan]'));
+    const input = fixture.debugElement.query(
+      By.css('.param-block input[data-param=pan]')
+    );
     input.triggerEventHandler('input', { target: { valueAsNumber: 50 } });
 
     fixture.detectChanges();
@@ -82,7 +104,9 @@ describe('TrackDetailComponent', () => {
     component.track = track;
     fixture.detectChanges();
 
-    const input = fixture.debugElement.query(By.css('.param-block input[data-param=delaySend]'));
+    const input = fixture.debugElement.query(
+      By.css('.param-block input[data-param=delaySend]')
+    );
     input.triggerEventHandler('input', { target: { valueAsNumber: 50 } });
 
     fixture.detectChanges();
