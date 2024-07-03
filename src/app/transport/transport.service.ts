@@ -6,7 +6,6 @@ import {
   animationFrames,
   filter,
   takeWhile,
-  tap,
 } from 'rxjs';
 
 export enum TransportStatus {

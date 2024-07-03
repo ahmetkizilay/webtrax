@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Storage, ref, uploadBytes } from '@angular/fire/storage';
@@ -26,7 +26,7 @@ interface FirestoreSample {
       <input id="file" type="file" class="upload"
         title="&nbsp;" value=""
         accept="audio/wav"
-        formControlName="file" 
+        formControlName="file"
         (change)="onFileChange($event)" multiple>
     </div>
   </form>
@@ -47,7 +47,7 @@ export class SamplesComponent implements OnDestroy {
 
   files: Sample[] = [];
   userSamplesSub = this.sampleLibrary.userSamples$.subscribe(samples => {
-    this.files = samples; 
+    this.files = samples;
   });
 
   uploadForm = new FormGroup({
@@ -64,7 +64,7 @@ export class SamplesComponent implements OnDestroy {
       return;
     }
     const files = Array.from(rawFiles);
-    // validate 
+    // validate
     // file type
     for (let file of files) {
       if (file.type !== 'audio/wav') {
