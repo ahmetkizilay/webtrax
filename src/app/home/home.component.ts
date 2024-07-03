@@ -15,7 +15,7 @@ import { SceneComponent } from '../scene/scene.component';
   ],
   template: `
     <div class="main">
-      <div class="left-bar">
+      <div class="left-bar" [class.collapsed]="!isSampleLibraryVisible">
         <button
           class="material-symbols-outlined toggle-btn"
           (click)="toggleSampleLibrary()"
