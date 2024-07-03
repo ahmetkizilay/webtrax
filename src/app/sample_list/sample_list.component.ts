@@ -40,7 +40,9 @@ export class SampleListComponent {
   }));
 
   playSample(sample: string) {
-    this.audioService.playSample(sample);
+    // Temporarily exclude 'public/' from the beginning of the sample name.
+    const strippedSampleName = sample.replace('public/', '').replace('.wav', '');
+    this.audioService.playSample(strippedSampleName);
   }
 
   handleDragStart(ev:Event, name: string) {
