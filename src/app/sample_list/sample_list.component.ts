@@ -1,12 +1,8 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SampleLibraryService } from '../sample-library.service';
 import { map } from 'rxjs';
 import { AudioService } from '../audio.service';
-
-interface SampleItem {
-  name: string;
-};
 
 @Component({
   selector: 'app-sample-list',
@@ -17,7 +13,7 @@ interface SampleItem {
 <label>SAMPLES</label>
 <ul class="samples">
   <li *ngFor="let sample of samples$ | async" class="sample">
-    <div draggable="true" 
+    <div draggable="true"
       (dragstart)="handleDragStart($event, sample.name)"
       (dragenter)="cancelEvent($event)" (dragover)="cancelEvent($event)">
       <label>{{sample.name}}</label>

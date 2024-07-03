@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SampleListComponent } from '../sample_list/sample_list.component';
 import { TransportComponent } from '../transport/transport.component';
@@ -34,15 +34,13 @@ import { SceneComponent } from '../scene/scene.component';
 })
 export class HomeComponent implements OnDestroy {
 
-  private audioContext: AudioContext;
+  private audioContext: AudioContext = inject(AudioContext);
 
   isAudioEnabled = false;
 
   isSampleLibraryVisible = false;
 
-  constructor(audioContext: AudioContext) {
-    this.audioContext = audioContext;
-
+  constructor() {
     // Binding the function to the class instance, so we can remove it later.
     this.onAudioStateChange = this.onAudioStateChange.bind(this);
 
