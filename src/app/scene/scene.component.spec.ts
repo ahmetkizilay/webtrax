@@ -15,6 +15,7 @@ describe('SceneComponent', () => {
   let mockStatusChange: ReplaySubject<SampleLibraryStatus>;
   let mockGetSampleFn: jasmine.Spy;
   let mockDownloadSampleFn: jasmine.Spy;
+  let mockGetSampleBufferFn: jasmine.Spy;
 
   // Used by Mocked TransportService
   let mockOnBeat;
@@ -27,6 +28,10 @@ describe('SceneComponent', () => {
     mockStatusChange = new ReplaySubject<SampleLibraryStatus>();
     mockGetSampleFn = jasmine.createSpy();
     mockDownloadSampleFn = jasmine.createSpy();
+    mockGetSampleBufferFn = jasmine.createSpy();
+    mockGetSampleBufferFn.and.returnValue(
+      new AudioBuffer({ length: 100, sampleRate: 44100 })
+    );
 
     mockOnBeat = new Subject();
     mockTransportState = new Subject();
@@ -42,6 +47,7 @@ describe('SceneComponent', () => {
           onStatusChange$: mockStatusChange,
           getSample: mockGetSampleFn,
           downloadSample: mockDownloadSampleFn,
+          getSampleBuffer: mockGetSampleBufferFn,
         }},
         {provide: TransportService, useValue: {
           onBeat: mockOnBeat,
