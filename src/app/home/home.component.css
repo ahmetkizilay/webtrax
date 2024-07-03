@@ -4,23 +4,46 @@ div.main {
     flex-direction: row;
     align-content: stretch;
     width: 100%;
+    height: 100vh; /* Ensure the main container takes full viewport height */
+    box-sizing: border-box;
 }
 
 div.main > div.left-bar {
-    padding-top: 8px;
-    margin-right: 8px;
-    display: flex;
     flex-direction: column;
     align-items: flex-start;
+    display: flex;
+    justify-content: flex-start;
+
+    width: 196px; /* Fixed width for the left bar */
+
+    margin: 4px;
+    padding: 6px 5px;
+
+    border: 1px solid #827575;
+    box-sizing: border-box;
+    border-radius: 8px;
 }
 
 div.main > div.left-bar > button.toggle-btn {
-    border:none;
-    border-radius: 2px; 
-    background: #cecece; 
-    outline-style:none; 
-    cursor:pointer;
-    padding: 0;
+  border:none;
+  border-radius: 2px;
+  background: #cecece;
+  outline-style:none;
+  cursor:pointer;
+  padding: 0;
+}
+
+/* Adjusted CSS for when the left-bar is collapsed */
+/* Assuming a class .collapsed is added to the left-bar when it's collapsed */
+div.main > div.left-bar.collapsed {
+  width: 36px;
+  overflow: hidden;
+  padding: 6px 5px;
+}
+
+div.main > app-scene {
+  flex-grow: 1; /* Take up the remaining space */
+  padding: 2px 0;
 }
 
 div.main > div.left-bar > app-sample-list {

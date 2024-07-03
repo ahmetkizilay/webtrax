@@ -1,1 +1,43 @@
 /* CSS for SceneComponent */
+.full-height-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Cover the full viewport height */
+  width: 100%;
+  box-sizing: border-box; /* Ensure padding and borders are included in the width calculation */
+}
+
+.full-height-container > * {
+  margin: 2px; /* Add margin around all children */
+  padding: 8px;
+}
+
+.full-height-container > app-transport {
+  height: 48px; /* Set the height of the transport component */
+
+  border: 1px solid #827575;
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding: 2px 8px;
+}
+
+.tracks-container {
+  flex-grow: 1; /* Take up all available space */
+  overflow-y: auto; /* Add scroll if content overflows */
+  /* Dynamically calculate height to fill available space */
+  height: calc(100vh - 120px - 172px); /* Subtract heights of app-transport and app-track-detail */
+  box-sizing: border-box; /* Include padding and borders in the element's total dimensions */
+
+  border: 1px solid #827575;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+app-track-detail {
+  height: 172px; /* Set the height of the track detail */
+
+  box-sizing: border-box;
+  border: 1px solid #827575;
+  border-radius: 8px;
+
+}

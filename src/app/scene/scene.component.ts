@@ -22,18 +22,16 @@ import { SceneManager, Track } from '../scene.service';
     SampleListComponent,
   ],
   template: `
-<div style="width: 100%">
-  <div>
-    <app-transport></app-transport>
+<div class="full-height-container">
+  <app-transport></app-transport>
+  <div class="tracks-container">
     <app-track
       *ngFor="let track of tracks"
       [track]="track"
       (trackSelect)="onTrackSelected($event)"
     ></app-track>
   </div>
-  <div class="detail-container" *ngIf="selectedTrack">
-    <app-track-detail [track]="selectedTrack"></app-track-detail>
-  </div>
+  <app-track-detail *ngIf="selectedTrack" [track]="selectedTrack"></app-track-detail>
 </div>
   `,
   styleUrls: ['./scene.component.css'],
