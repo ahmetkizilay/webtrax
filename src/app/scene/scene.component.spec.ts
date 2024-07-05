@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SceneComponent } from './scene.component';
-import { SampleLibraryService, SampleLibraryStatus } from '../sample-library.service';
+import { SampleLibraryService, SampleLibraryStatus } from '../sample_library/sample-library.service';
 import { ReplaySubject, Subject } from 'rxjs';
 import { TransportService } from '../transport/transport.service';
 import { AudioService } from '../audio.service';

@@ -30,6 +30,7 @@ export class SampleLibraryService {
   userSamples$ = new BehaviorSubject<Sample[]>([]);
 
   constructor(audioContext: AudioContext) {
+
     this.audio = audioContext;
     this.samples = [];
     this.onStatusChange$.next(SampleLibraryStatus.INITIALIZED);
