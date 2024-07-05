@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SampleLibraryService } from '../sample-library.service';
+import { SampleLibraryService } from '../sample_library/sample-library.service';
 import { map } from 'rxjs';
 import { AudioService } from '../audio.service';
 

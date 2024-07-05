@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TrackDetailComponent } from './track_detail.component';
 import { TrackManager } from '../scene.service';
 import { By } from '@angular/platform-browser';
-import { SampleLibraryService } from '../sample-library.service';
+import { SampleLibraryService } from '../sample_library/sample-library.service';
 
 describe('TrackDetailComponent', () => {
   let component: TrackDetailComponent;
