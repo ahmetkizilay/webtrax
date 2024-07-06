@@ -46,9 +46,6 @@ describe('TrackDetailComponent', () => {
     component.track = TrackManager.createEmptyTrack('my track', 'test.wav', 4);
     fixture.detectChanges();
 
-    const label = fixture.debugElement.query(By.css('.track-label'));
-    expect(label.nativeElement.textContent).toEqual('my track');
-
     const sampleId = fixture.debugElement.query(By.css('.id'));
     expect(sampleId.nativeElement.textContent).toEqual('test.wav');
 
@@ -63,16 +60,16 @@ describe('TrackDetailComponent', () => {
     expect(numChannels.nativeElement.textContent).toEqual('1');
   });
 
-  it('renders sample name', () => {
-    const track = TrackManager.createEmptyTrack('my track', 'test.wav', 4);
-
-    component.track = track;
+  it('formats track durations for longer than 1 second', () => {
+    // 66150 samples at 44100 Hz is 1.5 seconds
+    mockGetSampleBufferFn.and.returnValue(
+      new AudioBuffer({ length: 66150, sampleRate: 44100 })
+    );
+    component.track = TrackManager.createEmptyTrack('my track', 'test.wav', 4);
     fixture.detectChanges();
 
-    const sampleLabel = fixture.debugElement.query(
-      By.css('.param-block .sample-name')
-    );
-    expect(sampleLabel.nativeElement.textContent).toEqual('test.wav');
+     const sampleDuration = fixture.debugElement.query(By.css('.duration'));
+    expect(sampleDuration.nativeElement.textContent).toEqual('1.50 s');
   });
 
   it('handles gain change', () => {

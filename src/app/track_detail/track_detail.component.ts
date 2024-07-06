@@ -10,7 +10,8 @@ import { SampleLibraryService } from '../sample_library/sample_library.service';
   imports: [WaveformComponent, CommonModule],
   template: `
 <div class="track-detail">
-  <div class="device-block">
+  <div class="device-block" (drop)="handleDrop($event)"
+        (dragenter)="cancelEvent($event)" (dragover)="cancelEvent($event)">
     <div>
       <label class="id">{{trackParams.sampleId}}</label>
     </div>
@@ -32,15 +33,6 @@ import { SampleLibraryService } from '../sample_library/sample_library.service';
     <app-waveform [track]="track"></app-waveform>
   </div>
   <div class="device-block">
-    <div>
-      <label>Track Detail: </label>
-      <label class="track-label">{{track.name}}</label>
-    </div>
-    <div class="param-block" (drop)="handleDrop($event)"
-        (dragenter)="cancelEvent($event)" (dragover)="cancelEvent($event)">
-      <label class="param-name">Sample: </label>
-      <label class="sample-name">{{trackParams.sampleId}}</label>
-    </div>
     <div class="param-block">
       <label class="param-name">Gain:</label>
       <input data-param="gain" type="range" min="0" max="100"
@@ -102,11 +94,12 @@ export class TrackDetailComponent implements OnInit, OnChanges {
   handleDrop(ev: Event) {
     ev.stopPropagation();
 
-    let e = ev as DragEvent;
-    const data = e.dataTransfer?.getData("sample");
-    if (data) {
-      this.trackParams.sampleId = data;
-    }
+    // TODO: Implement this.
+    // let e = ev as DragEvent;
+    // const data = e.dataTransfer?.getData("sample");
+    // if (data) {
+    //   this.trackParams.sampleId = data;
+    // }
 
     return false;
   }
