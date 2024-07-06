@@ -1,6 +1,7 @@
-import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Inject, Injectable, inject } from '@angular/core';
+import { BehaviorSubject, filter, first, Observable, Subject } from 'rxjs';
 import { Storage, getBytes, ref } from '@angular/fire/storage';
+import { WAVEFORM_WORKER_TOKEN } from '../app.config';
 
 export interface Sample {
   name: string,
@@ -14,12 +15,19 @@ export enum SampleLibraryStatus {
   BUSY,
 };
 
+export interface WaveformData {
+  sampleId: string,
+  data: Float32Array,
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class SampleLibraryService {
-  private audio: AudioContext;
+  private audio: AudioContext = inject(AudioContext);
   private storage: Storage = inject(Storage);
+  // triggered from the waveform worker.
+  private onWaveformReady$ = new Subject<WaveformData>();
 
   private bufferMap = new Map<string, AudioBuffer>();
 
@@ -29,11 +37,31 @@ export class SampleLibraryService {
   samples$ = new BehaviorSubject<Sample[]>([]);
   userSamples$ = new BehaviorSubject<Sample[]>([]);
 
-  constructor(audioContext: AudioContext) {
-
-    this.audio = audioContext;
+  constructor(@Inject(WAVEFORM_WORKER_TOKEN) public waveformWorker: Worker) {
     this.samples = [];
     this.onStatusChange$.next(SampleLibraryStatus.INITIALIZED);
+
+    this.waveformWorker.onmessage = ({ data }) => {
+      if (data.status === 'done') {
+        let audioBuffer = this.bufferMap.get(data.sampleId)!;
+        audioBuffer.copyToChannel(new Float32Array(data.audioBuffer), 0);
+
+        this.onWaveformReady$.next({
+          sampleId: data.sampleId,
+          data: data.waveformBuffer,
+        });
+      }
+    };
+  }
+
+  requestWaveform(sampleId: string, waveform: Float32Array): Observable<WaveformData> {
+    let audioBuffer = this.bufferMap.get(sampleId);
+    this.waveformWorker.postMessage({
+      audioBuffer: audioBuffer?.getChannelData(0).buffer,
+      waveformBuffer: waveform.buffer,
+      sampleId
+    }, [waveform.buffer]);
+    return this.onWaveformReady$.asObservable().pipe(filter(data => data.sampleId === sampleId), first());
   }
 
   getSample(name: string): Sample | undefined {
