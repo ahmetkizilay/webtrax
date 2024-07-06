@@ -5,7 +5,7 @@ import { Storage, ref, uploadBytes } from '@angular/fire/storage';
 import { Firestore, addDoc, collection } from '@angular/fire/firestore';
 import { AuthService } from '../auth.service';
 import { environment } from '../../environments/environment';
-import { SampleLibraryService, Sample } from '../sample_library/sample-library.service';
+import { SampleLibraryService, Sample } from '../sample_library/sample_library.service';
 import { Subscription } from 'rxjs';
 
 interface FirestoreSample {

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
   SampleLibraryService,
   SampleLibraryStatus,
-} from '../sample_library/sample-library.service';
+} from '../sample_library/sample_library.service';
 import { filter, first } from 'rxjs';
 import { SampleListComponent } from '../sample_list/sample_list.component';
 import { TransportComponent } from '../transport/transport.component';

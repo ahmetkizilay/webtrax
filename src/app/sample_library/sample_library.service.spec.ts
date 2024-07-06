@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Sample, SampleLibraryService } from './sample-library.service';
+import { Sample, SampleLibraryService } from './sample_library.service';
 import { FirebaseApp, getApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { Storage, connectStorageEmulator, getStorage, provideStorage, ref, uploadBytes } from '@angular/fire/storage';
 import { WAVEFORM_WORKER_TOKEN } from '../app.config';
