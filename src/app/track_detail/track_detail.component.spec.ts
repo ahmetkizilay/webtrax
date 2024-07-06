@@ -4,18 +4,21 @@ import { TrackDetailComponent } from './track_detail.component';
 import { TrackManager } from '../scene.service';
 import { By } from '@angular/platform-browser';
 import { SampleLibraryService } from '../sample_library/sample-library.service';
+import { Subject } from 'rxjs';
 
 describe('TrackDetailComponent', () => {
   let component: TrackDetailComponent;
   let fixture: ComponentFixture<TrackDetailComponent>;
 
   let mockGetSampleBufferFn: jasmine.Spy;
+  let mockRequestWaveformFn: jasmine.Spy;
 
   beforeEach(() => {
     mockGetSampleBufferFn = jasmine.createSpy();
     mockGetSampleBufferFn.and.returnValue(
       new AudioBuffer({ length: 100, sampleRate: 44100 })
     );
+    mockRequestWaveformFn = jasmine.createSpy().and.returnValue(new Subject());
 
     TestBed.configureTestingModule({
       providers: [
@@ -23,6 +26,7 @@ describe('TrackDetailComponent', () => {
           provide: SampleLibraryService,
           useValue: {
             getSampleBuffer: mockGetSampleBufferFn,
+            requestWaveform: mockRequestWaveformFn,
           },
         },
       ],
