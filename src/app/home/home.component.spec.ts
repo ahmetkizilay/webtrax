@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HomeComponent } from './home.component';
-import { SampleLibraryService } from '../sample_library/sample-library.service';
+import { SampleLibraryService } from '../sample_library/sample_library.service';
 import { Subject } from 'rxjs';
 import { By } from '@angular/platform-browser';
 

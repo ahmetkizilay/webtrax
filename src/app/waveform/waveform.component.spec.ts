@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WaveformComponent } from './waveform.component';
 import { TrackManager } from '../scene.service';
-import { SampleLibraryService } from '../sample_library/sample-library.service';
+import { SampleLibraryService } from '../sample_library/sample_library.service';
 import { Subject } from 'rxjs';
 import { SimpleChange } from '@angular/core';
 
