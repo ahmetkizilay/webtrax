@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@ang
 import { CommonModule } from '@angular/common';
 import { Track, SampleTrackParams } from '../scene.service';
 import { WaveformComponent } from '../waveform/waveform.component';
+import { SampleLibraryService } from '../sample_library/sample_library.service';
 
 @Component({
   selector: 'app-track-detail',
@@ -9,6 +10,24 @@ import { WaveformComponent } from '../waveform/waveform.component';
   imports: [WaveformComponent, CommonModule],
   template: `
 <div class="track-detail">
+  <div class="device-block">
+    <div>
+      <label class="id">{{trackParams.sampleId}}</label>
+    </div>
+    <hr/>
+    <div>
+      <label>Dur: </label>
+      <label class="duration">{{duration}}</label>
+    </div>
+    <div>
+      <label>SR: </label>
+      <label class="sample-rate">{{sampleRate}}</label>
+    </div>
+    <div>
+      <label>Chan: </label>
+      <label class="num-channels">{{numChannels}}</label>
+    </div>
+  </div>
   <div class="device-block">
     <app-waveform [track]="track"></app-waveform>
   </div>
@@ -36,7 +55,7 @@ import { WaveformComponent } from '../waveform/waveform.component';
     </div>
     <div class="param-block">
       <label class="param-name">Delay Send:</label>
-      <input data-param="delaySend"  type="range" min="0" max="100"
+      <input data-param="delaySend" type="range" min="0" max="100"
         (input)="onDelaySendChange($event)"
         value="{{trackParams.delaySend! * 100}}"/>
     </div>
@@ -46,9 +65,14 @@ import { WaveformComponent } from '../waveform/waveform.component';
   styleUrls: ['./track_detail.component.css']
 })
 export class TrackDetailComponent implements OnInit, OnChanges {
+  private sampleLibraryService: SampleLibraryService = inject(SampleLibraryService);
 
   @Input({ required: true }) track!: Track;
   trackParams = {} as SampleTrackParams;
+
+  numChannels = 1;
+  sampleRate = 44100;
+  duration = '0';
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['track']) {
@@ -96,10 +120,24 @@ export class TrackDetailComponent implements OnInit, OnChanges {
       return;
     }
 
+
     this.trackParams = this.track.params;
     // Ensure that the values are valid.
     this.trackParams.gain = Number.isNaN(this.trackParams.gain) ? 1.0 : this.trackParams.gain;
     this.trackParams.pan = Number.isNaN(this.trackParams.pan) ? 0.0 : this.trackParams.pan;
     this.trackParams.delaySend = Number.isNaN(this.trackParams.delaySend) ? 0.0 : this.trackParams.delaySend;
+
+    const audioBuffer = this.sampleLibraryService.getSampleBuffer(this.track.params.sampleId)!;
+    this.numChannels = audioBuffer.numberOfChannels;
+    this.sampleRate = audioBuffer.sampleRate;
+    this.duration = this.formatDuration(audioBuffer.duration);
+  }
+
+  private formatDuration(duration: number): string {
+    if (duration < 1) {
+      return `${Math.floor(duration * 1000)} ms`;
+    } else {
+      return duration.toFixed(2) + ' s';
+    }
   }
 }
