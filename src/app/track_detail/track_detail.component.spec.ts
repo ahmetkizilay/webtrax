@@ -42,12 +42,25 @@ describe('TrackDetailComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('labels track detail', () => {
+  it('adds track detail labels', () => {
     component.track = TrackManager.createEmptyTrack('my track', 'test.wav', 4);
     fixture.detectChanges();
 
     const label = fixture.debugElement.query(By.css('.track-label'));
     expect(label.nativeElement.textContent).toEqual('my track');
+
+    const sampleId = fixture.debugElement.query(By.css('.id'));
+    expect(sampleId.nativeElement.textContent).toEqual('test.wav');
+
+    const sampleDuration = fixture.debugElement.query(By.css('.duration'));
+    // 100 samples at 44100 Hz is
+    expect(sampleDuration.nativeElement.textContent).toEqual('2 ms');
+
+    const sampleRate = fixture.debugElement.query(By.css('.sample-rate'));
+    expect(sampleRate.nativeElement.textContent).toEqual('44100');
+
+    const numChannels = fixture.debugElement.query(By.css('.num-channels'));
+    expect(numChannels.nativeElement.textContent).toEqual('1');
   });
 
   it('renders sample name', () => {
