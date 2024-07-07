@@ -1,7 +1,7 @@
 import { Component, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '../auth.service';
+import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 import { ReplaySubject, Subscription, filter, first, lastValueFrom  } from 'rxjs';
 

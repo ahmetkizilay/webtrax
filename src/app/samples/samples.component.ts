@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Storage, ref, uploadBytes } from '@angular/fire/storage';
 import { Firestore, addDoc, collection } from '@angular/fire/firestore';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../login/auth.service';
 import { environment } from '../../environments/environment';
 import { SampleLibraryService, Sample } from '../sample_library/sample_library.service';
 import { Subscription } from 'rxjs';
