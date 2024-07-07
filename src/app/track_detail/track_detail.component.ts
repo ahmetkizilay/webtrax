@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Track, SampleTrackParams } from '../scene.service';
+import { Track, SampleTrackParams } from '../scene/scene.service';
 import { WaveformComponent } from '../waveform/waveform.component';
 import { SampleLibraryService } from '../sample_library/sample_library.service';
 

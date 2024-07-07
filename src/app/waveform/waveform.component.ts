@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Track } from '../scene.service';
+import { Track } from '../scene/scene.service';
 import { SampleLibraryService } from '../sample_library/sample_library.service';
 
 @Component({

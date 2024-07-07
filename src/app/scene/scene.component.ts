@@ -9,7 +9,7 @@ import { SampleListComponent } from '../sample_list/sample_list.component';
 import { TransportComponent } from '../transport/transport.component';
 import { TrackComponent } from '../track/track.component';
 import { TrackDetailComponent } from '../track_detail/track_detail.component';
-import { SceneManager, Track } from '../scene.service';
+import { SceneManager, Track } from './scene.service';
 
 @Component({
   selector: 'app-scene',

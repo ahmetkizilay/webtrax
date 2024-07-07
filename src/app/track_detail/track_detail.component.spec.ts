@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TrackDetailComponent } from './track_detail.component';
-import { TrackManager } from '../scene.service';
+import { TrackManager } from '../scene/scene.service';
 import { By } from '@angular/platform-browser';
 import { SampleLibraryService } from '../sample_library/sample_library.service';
 import { Subject } from 'rxjs';
