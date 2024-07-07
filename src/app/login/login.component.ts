@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
-import { ReplaySubject, Subscription, distinctUntilChanged, filter, first, lastValueFrom  } from 'rxjs';
+import { ReplaySubject, Subscription, filter, first, lastValueFrom  } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +14,7 @@ import { ReplaySubject, Subscription, distinctUntilChanged, filter, first, lastV
   ],
   template: `
 <div *ngIf="mode == 'login'" class="form-wrapper">
-  <form [formGroup]="loginForm" (submit)="login()">
+  <form class="signin" [formGroup]="loginForm" (submit)="login()">
     <div class="input-row">
       <label for="email">Email</label>
       <input id="email" type="email" formControlName="email">
@@ -27,13 +27,13 @@ import { ReplaySubject, Subscription, distinctUntilChanged, filter, first, lastV
     <hr/>
     <div class="input-row">
       <label>New User?</label>
-      <button (click)="switchToRegister()">Create an account</button>
+      <button class="switch-register" (click)="switchToRegister()">Create an account</button>
     </div>
   </form>
 </div>
 
 <div *ngIf="mode == 'register'" class="form-wrapper">
-  <form [formGroup]="registerForm" (submit)="register()">
+  <form class="signup" [formGroup]="registerForm" (submit)="register()">
     <div class="input-row">
       <label for="email">Email</label>
       <input id="email" type="email" formControlName="email">
@@ -46,12 +46,12 @@ import { ReplaySubject, Subscription, distinctUntilChanged, filter, first, lastV
     <hr/>
     <div class="input-row">
       <label>Returning User?</label>
-      <button (click)="switchToLogin()">Login</button>
+      <button class="switch-login" (click)="switchToLogin()">Login</button>
     </div>
   </form>
 </div>
 
-<div *ngIf="mode == 'logout'" class="form-wrapper">
+<div *ngIf="mode == 'logout'" class="form-wrapper signout">
   <label style="margin-bottom: 4px">Already logged in!</label>
   <button *ngIf="isSignedIn$ | async" (click)="logout()">Logout</button>
 </div>
