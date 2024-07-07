@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, inject, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AudioService  } from '../audio.service';
+import { AudioService  } from '../audio/audio.service';
 import { distinctUntilChanged, map } from 'rxjs';
 import { TransportService, TransportStatus } from '../transport/transport.service';
 import { Track } from '../scene/scene.service';

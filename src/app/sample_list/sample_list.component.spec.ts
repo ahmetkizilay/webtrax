@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SampleListComponent } from './sample_list.component';
 import { Sample, SampleLibraryService } from '../sample_library/sample_library.service';
-import { AudioService } from '../audio.service';
+import { AudioService } from '../audio/audio.service';
 import { Subject } from 'rxjs';
 import { By } from '@angular/platform-browser';
 
