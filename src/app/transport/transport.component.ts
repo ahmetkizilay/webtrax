@@ -11,8 +11,8 @@ import { distinctUntilChanged, map, tap } from 'rxjs';
 <div class="transport">
   <label>BPM: </label>
   <input type="number" value="{{bpm$ | async}}" (change)="onBpmChange($event)" min="1" max="360"/>
-  <button (click)="onClickPlay()" [disabled]="isPlaying$ | async">Play</button>
-  <button (click)="onClickStop()" [disabled]="isStopped$ | async">Stop</button>
+  <button class="play" (click)="onClickPlay()" [disabled]="isPlaying$ | async">Play</button>
+  <button class="stop" (click)="onClickStop()" [disabled]="isStopped$ | async">Stop</button>
 </div>
   `,
   styleUrls: ['./transport.component.css']
