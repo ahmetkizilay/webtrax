@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { SampleLibraryService } from './sample_library/sample_library.service';
-import { Track, SampleTrackParams } from './scene/scene.service';
+import { SampleLibraryService } from '../sample_library/sample_library.service';
+import { Track, SampleTrackParams } from '../scene/scene.service';
 
 export type TrackParams = SampleTrackParams;
 

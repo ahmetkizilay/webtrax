@@ -4,7 +4,7 @@ import { SceneComponent } from './scene.component';
 import { SampleLibraryService, SampleLibraryStatus } from '../sample_library/sample_library.service';
 import { ReplaySubject, Subject } from 'rxjs';
 import { TransportService } from '../transport/transport.service';
-import { AudioService } from '../audio.service';
+import { AudioService } from '../audio/audio.service';
 import { By } from '@angular/platform-browser';
 
 describe('SceneComponent', () => {

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TrackComponent } from './track.component';
-import { AudioService } from '../audio.service';
+import { AudioService } from '../audio/audio.service';
 import { TrackManager } from '../scene/scene.service';
 import { TransportService } from '../transport/transport.service';
 import { Subject } from 'rxjs';

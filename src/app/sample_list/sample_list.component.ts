@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SampleLibraryService } from '../sample_library/sample_library.service';
 import { map } from 'rxjs';
-import { AudioService } from '../audio.service';
+import { AudioService } from '../audio/audio.service';
 
 @Component({
   selector: 'app-sample-list',
