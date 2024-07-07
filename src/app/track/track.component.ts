@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AudioService  } from '../audio.service';
 import { distinctUntilChanged, map } from 'rxjs';
 import { TransportService, TransportStatus } from '../transport/transport.service';
-import { Track } from '../scene.service';
+import { Track } from '../scene/scene.service';
 
 export interface TrackCell {
   active: boolean;
