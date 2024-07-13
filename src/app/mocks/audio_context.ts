@@ -1,18 +1,22 @@
 class MockAudioParam {
-  setValueAtTime() {}
+  setValueAtTime(val: number, time: number) {}
 }
 
 class MockNode {
-  connect() {}
+  connections: MockNode[] = [];
+  connect(node: MockNode) {
+    this.connections.push(node);
+  }
 }
 
-class MockDelayNode extends MockNode {
+export class MockDelayNode extends MockNode {
   delayTime: MockAudioParam = new MockAudioParam();
 }
 
 export class MockAudioContext {
   state: string = 'suspended';
   registeredEvents: Map<string, Function[]> = new Map();
+  nodes: MockNode[] = [];
 
   addEventListener(eventName:string, fn: Function) {
     let currentRegisteredEvents = this.registeredEvents.get(eventName) || [];
@@ -36,10 +40,14 @@ export class MockAudioContext {
   }
 
   createGain() {
-    return new MockNode();
+    let gainNode = new MockNode();
+    this.nodes.push(gainNode);
+    return gainNode;
   }
 
   createDelay() {
-    return new MockDelayNode();
+    let delayNode = new MockDelayNode();
+    this.nodes.push(delayNode);
+    return delayNode;
   }
 }

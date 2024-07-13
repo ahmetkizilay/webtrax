@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { SampleLibraryService } from '../sample_library/sample_library.service';
 import { Track, SampleTrackParams } from '../scene/scene.service';
+import { TransportService } from '../transport/transport.service';
 
 export type TrackParams = SampleTrackParams;
 
@@ -42,24 +43,31 @@ interface TrackNode {
   providedIn: 'root'
 })
 export class AudioService {
-  private audio: AudioContext;
+  private audio: AudioContext = inject(AudioContext);
   private sampleLibrary: SampleLibraryService = inject(SampleLibraryService);
+  private transport: TransportService = inject(TransportService);
 
   private bpm = 128;
+  private delayTime = 60 / (this.bpm * 2);
 
   private tracks = new Map<string, TrackNode>();
 
   private delaySend: DelayNode;
   private mainOut: GainNode;
 
-  constructor(audioContext: AudioContext) {
-    this.audio = audioContext;
+  constructor() {
     this.mainOut = this.audio.createGain();
     this.mainOut.connect(this.audio.destination);
 
     this.delaySend = this.audio.createDelay();
-    this.delaySend.delayTime.setValueAtTime(60 / (this.bpm * 2), 0);
+    this.delaySend.delayTime.setValueAtTime(this.delayTime, 0);
     this.delaySend.connect(this.mainOut);
+
+    this.transport.transportState$.subscribe((state) => {
+      this.bpm = state.bpm;
+      this.delayTime = 60 / (this.bpm * 2);
+      this.delaySend.delayTime.setValueAtTime(this.delayTime, 0);
+    });
   }
 
   playSample(trackName: string, when = 0) {
