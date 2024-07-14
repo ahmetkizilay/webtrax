@@ -73,6 +73,6 @@ export const appConfig: ApplicationConfig = {
       provide: WAVEFORM_WORKER_TOKEN,
       useFactory: () =>
         new Worker(new URL('./waveform/waveform.worker', import.meta.url)),
-    },
+    }
   ],
 };
