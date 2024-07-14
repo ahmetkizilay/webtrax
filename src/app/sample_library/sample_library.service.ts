@@ -56,9 +56,12 @@ export class SampleLibraryService {
 
   requestWaveform(sampleId: string, waveform: Float32Array): Observable<WaveformData> {
     let audioBuffer = this.bufferMap.get(sampleId);
+    // Set default blockSize to 10ms, which can be calculated by the sample rate of the audio buffer.
+    const blockSize = 0.01 * audioBuffer!.sampleRate;
     this.waveformWorker.postMessage({
       audioBuffer: audioBuffer?.getChannelData(0).buffer,
       waveformBuffer: waveform.buffer,
+      blockSize,
       sampleId
     }, [waveform.buffer]);
     return this.onWaveformReady$.asObservable().pipe(filter(data => data.sampleId === sampleId), first());

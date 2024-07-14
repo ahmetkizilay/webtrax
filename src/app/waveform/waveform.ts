@@ -1,10 +1,8 @@
-export function buildWaveform(audioBuffer: ArrayBufferLike, waveformBuffer: ArrayBufferLike): ArrayBufferLike {
+export function buildWaveform(audioBuffer: ArrayBufferLike, waveformBuffer: ArrayBufferLike, blockSize: number): ArrayBufferLike {
 
   // Convert the transferred ArrayBuffer back to Float32Array
   const raw = new Float32Array(audioBuffer);
   const waveform = new Float32Array(waveformBuffer);
-  // TODO: pass the block size into the worker.
-  const blockSize = Math.floor(raw.length / waveform.length);
 
   for (let i = 0; i < waveform.length; i++) {
     let sum = 0;
@@ -18,7 +16,7 @@ export function buildWaveform(audioBuffer: ArrayBufferLike, waveformBuffer: Arra
       }
       sum += Math.abs(raw[blockOffset + j]);
     }
-    waveform[i] = sum / j;
+    waveform[i] = (j === 0) ? 0 : sum / j;
   }
 
   return waveformBuffer;
