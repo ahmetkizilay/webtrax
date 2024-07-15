@@ -7,8 +7,7 @@ import { Storage, getBytes, ref, uploadBytes } from '@angular/fire/storage';
 })
 export class FirebaseStorageWrapper {
   public storage: Storage = inject(Storage);
-
-  ref: Function = ref;
-  getBytes: Function = getBytes;
-  uploadBytes: Function = uploadBytes;
+  public ref = ref;
+  public getBytes = getBytes;
+  public uploadBytes = uploadBytes;
 }

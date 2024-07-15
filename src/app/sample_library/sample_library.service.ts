@@ -121,13 +121,12 @@ export class SampleLibraryService {
     }
 
     const sampleRefence = this.wrappedStorage.ref(
-      this.wrappedStorage,
+      this.wrappedStorage.storage,
       `samples/${userId}/${Date.now()}.wav`
     );
     try {
-      await this.wrappedStorage.uploadBytes(sampleRefence, file, {
-
-      });
+      await this.wrappedStorage.uploadBytes(sampleRefence, file);
+      console.log('upload done');
     } catch (error) {
       console.error('upload failed:', error);
       return false;
