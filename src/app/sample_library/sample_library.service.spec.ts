@@ -11,6 +11,7 @@ class MockWorker {
 }
 
 class MockStorage {
+  storage = {};
   ref = jasmine.createSpy();
   getBytes = jasmine.createSpy();
   uploadBytes = jasmine.createSpy();
@@ -153,8 +154,10 @@ describe('SampleLibraryService', () => {
     const file = new File([blob], 'test.wav', {type: 'audio/wav'});
 
     const res = await service.uploadSample(file);
-
     expect(res).toBeTrue();
+
+    expect(mockStorage.ref).toHaveBeenCalledWith(
+      mockStorage.storage, jasmine.any(String));
   });
 
   it('rejects upload if file is not audio/wav', async () => {

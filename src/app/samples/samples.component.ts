@@ -1,18 +1,7 @@
 import { Component, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Storage, ref, uploadBytes } from '@angular/fire/storage';
-import { Firestore, addDoc, collection } from '@angular/fire/firestore';
-import { AuthService } from '../login/auth.service';
-import { environment } from '../../environments/environment';
 import { SampleLibraryService, Sample } from '../sample_library/sample_library.service';
-import { Subscription } from 'rxjs';
-
-interface FirestoreSample {
-  name: string,
-  path: string,
-  owner: string,
-};
 
 @Component({
   selector: 'app-samples',
@@ -40,9 +29,6 @@ interface FirestoreSample {
   styleUrls: ['./samples.component.css']
 })
 export class SamplesComponent implements OnDestroy {
-  private readonly storage: Storage = inject(Storage);
-  private readonly firestore: Firestore = inject(Firestore);
-  private readonly auth: AuthService = inject(AuthService);
   private readonly sampleLibrary: SampleLibraryService = inject(SampleLibraryService);
 
   files: Sample[] = [];
@@ -80,40 +66,9 @@ export class SamplesComponent implements OnDestroy {
     this.upload(files);
   }
 
-  private upload(files: File[]) {
-    const userId = this.auth.getCurrentUserId();
-    if (!userId) {
-      // This should never be the case, because this component is auth-guarded.
-      console.error("Cannot upload: No Active User");
-      return;
-    }
-
-    const samplesCollection = collection(this.firestore, 'samples');
-
-    const samplesBucket = `gs://${environment.firebase.config.storageBucket}`;
-    let uploads = [];
-    const now = Date.now();
-    for (let i = 0; i < files.length; i += 1) {
-      const file = files[i];
-      const bucketPath = `samples/${userId}/${now}_${i}/${file.name}`;
-      const storageRef = ref(this.storage, `${samplesBucket}/${bucketPath}`);
-      uploads.push(Promise.all([
-        // Cloud Storage
-        uploadBytes(storageRef, file),
-        // Firestore
-        addDoc(samplesCollection, <FirestoreSample>{
-          name: file.name,
-          path: bucketPath,
-          owner: userId,
-        }),
-      ]));
-    }
-    Promise.all(uploads).then(() => {
-      console.log('Finished the uploads');
-    }).catch(e => {
-      console.log(e);
-    }).finally(() => {
-      // clear the state
-    });
+  private async upload(files: File[]) {
+    await Promise.all(files.map(file => {
+      return this.sampleLibrary.uploadSample(file);
+    }));
   }
 }
