@@ -23,12 +23,21 @@ jobs:
       - name: Install and build dependencies
         run: |
           npm ci
+          npm run ci:functions
+          npm run build:functions
           npm install firebase-tools
       - name: Deploy Firebase Security Rules
         run: |
           npm run test:firestore:rules
           npm run test:storage:rules
           npm run deploy:firebase:rules
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/credentials.json
+      - name: Deploy Firebase Functions
+        run: |
+          npm run lint:functions
+          npm run test:functions
+          npm run deploy:functions
         env:
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/credentials.json
       - name: Remove Google Application Credentials
