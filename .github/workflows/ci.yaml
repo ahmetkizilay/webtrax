@@ -22,6 +22,8 @@ jobs:
       - name: Install and build dependencies
         run: |
           npm ci
+          npm run ci:functions
+          npm run build:functions
           npm install -g firebase-tools
       - name: Set up App Check CI
         run: sed -i 's/<!-- __APP_CHECK__ -->/<script>FIREBASE_APPCHECK_DEBUG_TOKEN="${{ secrets.FIREBASE_APP_CHECK_CI_TOKEN }}"<\/script>/g' src/index.html
@@ -40,8 +42,6 @@ jobs:
         run: npm run e2e
       - name: Run Firebase Function tests
         run: |
-          npm run ci:functions
-          npm run build:functions
           npm run lint:functions
           npm run test:functions
       - name: Clean up changes to index.html
