@@ -13,7 +13,12 @@
     "e2e": "firebase emulators:exec --only=auth \"ng e2e\" --import=\"./e2e/emulator-data/\"",
     "deploy:firebase:rules": "firebase deploy --only firestore:rules,storage",
     "dev:bootstrap": "npm --prefix firebase_admin/scripts run build && npm --prefix firebase_admin/scripts run bootstrap:emulator",
-    "dev:startemu": "firebase emulators:exec \"npm run dev:bootstrap && npm start\" --import=\"./src/test_data/emulator-data/\""
+    "dev:startemu": "firebase emulators:exec \"npm run dev:bootstrap && npm start\" --import=\"./src/test_data/emulator-data/\"",
+    "install:functions": "npm --prefix functions install",
+    "build:functions": "npm --prefix functions run build",
+    "lint:functions": "npm --prefix functions run lint",
+    "test:functions": "firebase emulators:exec \"npm --prefix functions test\"  --import=\"./e2e/emulator-data/\"",
+    "deploy:functions": "firebase deploy --only functions"
   },
   "private": true,
   "dependencies": {
