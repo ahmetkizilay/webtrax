@@ -14,7 +14,6 @@
     "deploy:firebase:rules": "firebase deploy --only firestore:rules,storage",
     "dev:bootstrap": "npm --prefix firebase_admin/scripts run build && npm --prefix firebase_admin/scripts run bootstrap:emulator",
     "dev:startemu": "firebase emulators:exec \"npm run dev:bootstrap && npm start\" --import=\"./src/test_data/emulator-data/\"",
-
     "ci:functions": "npm --prefix functions ci",
     "install:functions": "npm --prefix functions install",
     "build:functions": "npm --prefix functions run build",
@@ -48,12 +47,14 @@
     "@types/jasmine": "~5.1.4",
     "jasmine": "5.1.0",
     "jasmine-core": "~5.1.2",
+    "jest": "^29.7.0",
     "karma": "~6.4.3",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.1",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "puppeteer": "22.11.2",
+    "ts-jest": "^29.2.4",
     "typescript": ">=5.2.0 and <5.5.0"
   }
 }
