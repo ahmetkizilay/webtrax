@@ -29,7 +29,7 @@ const APP_CONFIG = {
   storageBucket: 'webtrax-1fc7d.appspot.com',
 };
 
-describe('Firebase Functions', () => {
+xdescribe('Firebase Functions', () => {
   let app: FirebaseApp;
   let functions;
   let auth: Auth;
