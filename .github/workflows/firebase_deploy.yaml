@@ -33,13 +33,6 @@ jobs:
           npm run deploy:firebase:rules
         env:
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/credentials.json
-      - name: Deploy Firebase Functions
-        run: |
-          npm run lint:functions
-          npm run test:functions
-          npm run deploy:functions
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: /tmp/credentials.json
       - name: Remove Google Application Credentials
         if: ${{ !cancelled() }}
         run: rm /tmp/credentials.json
