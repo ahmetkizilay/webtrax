@@ -4,11 +4,22 @@ __EXPERIMENTAL__: This repository is at a very early stage. Everything will chan
 
 ## Develop + Demo
 
-Currently using [idx.dev](https://idx.dev) to develop this project. Deploying directly into [Firebase Hosting](https://firebase.google.com/docs/hosting).
+This application has Firebase AppCheck enabled. Update `index.html` with `FIREBASE_APPCHECK_DEBUG_TOKEN` value before starting it locally.
+
+Then run `npm run dev:bootstrap`. This command will start Firebase emulators. It will add default audio files to Firebase Storage and Firestore. The list of default records are defined inside `data/bootstrap.txt`. This file is not checked-in.
+
+The format of the file is as follows:
+
+```
+auth: { "email": "admin@test.com", "password": "", "admin": true}
+firestore: {"collection": "samples", "data": { "name": "kick", "owner": null, "path": "public/kick.wav"} }
+storage: {"src": "kick.wav", "dest": "samples/public/kick.wav"}
+```
+
+## Demo
 
 To demo it on Firebase: https://wx.cryn.dev
 
-To demo it on IDX: https://9000-monospace-webtrax-ng-1694359528583.cluster-lknrrkkitbcdsvoir6wqg4mwt6.cloudworkstations.dev/
 
 ## Firebase Configs
 
